@@ -20,22 +20,28 @@ function useCredentials() {
 }
 
 export function usePlants() {
-	const { token, apiKey, isReady } = useCredentials();
+	const { token, apiKey } = useCredentials();
 
 	return useQuery({
-		queryKey: plantsKey,
-		queryFn: () => plantApi.getAll(token!, apiKey!),
-		enabled: isReady,
+		queryKey: [...plantsKey, token, apiKey],
+		queryFn: () => {
+			if (!token || !apiKey) return Promise.resolve([]);
+			return plantApi.getAll(token, apiKey);
+		},
+		enabled: Boolean(token),
 	});
 }
 
 export function usePlant(id: number | null) {
-	const { token, apiKey, isReady } = useCredentials();
+	const { token, apiKey } = useCredentials();
 
 	return useQuery({
-		queryKey: [...plantsKey, id],
-		queryFn: () => plantApi.getById(id!, token!, apiKey!),
-		enabled: isReady && id !== null,
+		queryKey: [...plantsKey, id, token, apiKey],
+		queryFn: () => {
+			if (!token || !apiKey || id === null) return Promise.resolve(null);
+			return plantApi.getById(id, token, apiKey);
+		},
+		enabled: Boolean(token) && id !== null,
 	});
 }
 
@@ -44,7 +50,13 @@ export function useCreatePlant() {
 	const { token, apiKey } = useCredentials();
 
 	return useMutation({
-		mutationFn: (data: PlantFormData) => plantApi.create(data, token!, apiKey!),
+		mutationFn: (data: PlantFormData) => {
+			if (!token || !apiKey) {
+				return Promise.reject(new Error("Missing credentials"));
+			}
+
+			return plantApi.create(data, token, apiKey);
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
 		},
@@ -57,7 +69,9 @@ export function useUpdatePlant() {
 
 	return useMutation({
 		mutationFn: ({ id, data }: { id: number; data: PlantFormData }) =>
-			plantApi.update(id, data, token!, apiKey!),
+			token && apiKey
+				? plantApi.update(id, data, token, apiKey)
+				: Promise.reject(new Error("Missing credentials")),
 		onSuccess: (plant) => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
 			queryClient.invalidateQueries({ queryKey: [...plantsKey, plant.id] });
@@ -70,7 +84,10 @@ export function useDeletePlant() {
 	const { token, apiKey } = useCredentials();
 
 	return useMutation({
-		mutationFn: (id: number) => plantApi.delete(id, token!, apiKey!),
+		mutationFn: (id: number) =>
+			token && apiKey
+				? plantApi.delete(id, token, apiKey)
+				: Promise.reject(new Error("Missing credentials")),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
 		},

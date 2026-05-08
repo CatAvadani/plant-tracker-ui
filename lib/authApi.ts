@@ -1,4 +1,5 @@
 import api from "./api";
+import axios from "axios";
 import type { ApiKeyResponse, AuthResponse } from "./types";
 import type { LoginFormData, RegisterFormData } from "./validators";
 
@@ -30,6 +31,28 @@ function getClaim(payload: Record<string, unknown>, ...keys: string[]): string {
 	throw new Error(`Missing JWT claim: ${keys.join(" or ")}`);
 }
 
+async function generateApiKeyForToken(token: string): Promise<string | null> {
+	try {
+		const response = await api.post<ApiKeyResponse>(
+			"/api/apikey/generate",
+			{},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+
+		return response.data.apiKey;
+	} catch (error) {
+		if (axios.isAxiosError(error) && error.response?.status === 409) {
+			return null;
+		}
+
+		throw error;
+	}
+}
+
 export const authApi = {
 	register: async (data: RegisterFormData): Promise<{ message: string }> => {
 		const response = await api.post("/api/auth/register", data);
@@ -39,6 +62,7 @@ export const authApi = {
 	login: async (data: LoginFormData): Promise<AuthResponse> => {
 		const response = await api.post("/api/auth/login", data);
 		const { token } = response.data;
+		const apiKey = await generateApiKeyForToken(token);
 		const payload = parseJwt(token);
 		const nameIdClaim =
 			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
@@ -46,6 +70,7 @@ export const authApi = {
 			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 		return {
 			token,
+			apiKey,
 			user: {
 				id: getClaim(payload, nameIdClaim, "sub"),
 				email: getClaim(payload, emailClaim, "email"),
