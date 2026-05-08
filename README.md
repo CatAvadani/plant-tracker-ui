@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Plant Tracker UI
+
+Plant Tracker UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication and API-key-protected plant CRUD endpoints.
+
+## Features
+
+- Public landing page with clear registration and login paths
+- Login and registration flows with form validation
+- Authenticated dashboard shell with desktop sidebar, mobile navigation, user menu, and logout
+- Plant dashboard with collection stats, loading skeletons, empty states, and responsive plant cards
+- Add and edit plant form with validation, watering frequency slider, health status control, and notes
+- Plant actions for watering, editing, and deleting
+- Settings page for profile display and API key generation/copying
+- Dark mode-ready styling with Tailwind `dark:` classes
+
+## Tech Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui and Radix primitives
+- Zustand for persisted auth state
+- TanStack Query for server state
+- React Hook Form and Zod for forms
+- Axios for API calls
+- Sonner for toast notifications
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create a local environment file:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+Use the URL and port that your .NET API is running on.
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend expects the backend to expose:
 
-## Learn More
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/apikey/generate`
+- `GET /api/plants`
+- `GET /api/plants/{id}`
+- `POST /api/plants`
+- `PUT /api/plants/{id}`
+- `DELETE /api/plants/{id}`
 
-To learn more about Next.js, take a look at the following resources:
+Plant API calls send both:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `Authorization: Bearer {token}`
+- `X-Api-Key: {apiKey}`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+After logging in, generate an API key from the Settings page before using the plant dashboard.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```text
+app/
+  (auth)/login
+  (auth)/register
+  (dashboard)/dashboard
+  (dashboard)/settings
+components/
+  auth/
+  dashboard/
+  plants/
+  ui/
+hooks/
+  usePlants.ts
+lib/
+  api.ts
+  authApi.ts
+  plantApi.ts
+  types.ts
+  validators.ts
+store/
+  authStore.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+```
+
+## Verification
+
+Before shipping changes, run:
+
+```bash
+npm run lint
+npm run build
+```
