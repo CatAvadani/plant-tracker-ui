@@ -7,11 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePlants } from "@/hooks/usePlants";
-import { authApi } from "@/lib/authApi";
 import { HealthStatus } from "@/lib/types";
-import { useAuthStore } from "@/store/authStore";
 import { AlertCircle, Droplets, Leaf, Plus, Sprout } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 const statCards = [
 	{
@@ -42,26 +40,7 @@ const statCards = [
 
 export default function DashboardPage() {
 	const [formOpen, setFormOpen] = useState(false);
-	const { token, apiKey, setApiKey } = useAuthStore();
-	const generatingApiKey = useRef(false);
 	const { data: plants = [], isLoading, isError } = usePlants();
-
-	useEffect(() => {
-		if (!token || apiKey || generatingApiKey.current) return;
-
-		generatingApiKey.current = true;
-		authApi
-			.generateApiKey(token)
-			.then((response) => {
-				setApiKey(response.apiKey);
-			})
-			.catch(() => {
-				// Keep API key recovery invisible; reads will stay empty until credentials exist.
-			})
-			.finally(() => {
-				generatingApiKey.current = false;
-			});
-	}, [token, apiKey, setApiKey]);
 
 	const stats = useMemo(
 		() => ({
@@ -99,7 +78,6 @@ export default function DashboardPage() {
 					type="button"
 					className="hidden bg-[#2f6f4e] text-white hover:bg-[#285f43] sm:inline-flex"
 					onClick={() => setFormOpen(true)}
-					disabled={!apiKey}
 				>
 					<Plus className="size-4" />
 					Add Plant
@@ -191,7 +169,6 @@ export default function DashboardPage() {
 				size="icon-lg"
 				className="fixed bottom-5 right-5 z-20 size-14 rounded-full bg-[#2f6f4e] text-white shadow-xl hover:bg-[#285f43] sm:hidden"
 				onClick={() => setFormOpen(true)}
-				disabled={!apiKey}
 			>
 				<Plus className="size-6" />
 				<span className="sr-only">Add Plant</span>

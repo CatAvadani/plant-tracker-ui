@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const navItems = [
 	{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -38,32 +38,17 @@ function getInitials(name?: string, email?: string) {
 		.join("");
 }
 
-function subscribeToHydration(onStoreChange: () => void) {
-	const unsubscribeFinish = useAuthStore.persist.onFinishHydration(onStoreChange);
-	const unsubscribeHydrate = useAuthStore.persist.onHydrate(onStoreChange);
-
-	return () => {
-		unsubscribeFinish();
-		unsubscribeHydrate();
-	};
-}
-
 export function DashboardShell({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
-	const { user, token, logout } = useAuthStore();
-	const hydrated = useSyncExternalStore(
-		subscribeToHydration,
-		() => useAuthStore.persist.hasHydrated(),
-		() => true,
-	);
+	const { user, token, logout, hasHydrated } = useAuthStore();
 	const [mobileOpen, setMobileOpen] = useState(false);
 
 	useEffect(() => {
-		if (hydrated && (!token || !user)) {
+		if (hasHydrated && (!token || !user)) {
 			router.push("/login");
 		}
-	}, [hydrated, token, user, router]);
+	}, [hasHydrated, token, user, router]);
 
 	const pageTitle = useMemo(() => {
 		if (pathname === "/settings") return "Settings";
@@ -75,7 +60,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 		router.push("/login");
 	};
 
-	if (!hydrated || !token || !user) return null;
+	if (!hasHydrated || !token || !user) return null;
 
 	const sidebar = (
 		<div className="flex h-full flex-col bg-[#f7f2e8] text-[#253326] dark:bg-[#17241c] dark:text-[#eef4ea]">
