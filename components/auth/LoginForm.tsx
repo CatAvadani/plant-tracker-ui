@@ -21,7 +21,7 @@ import { toast } from "sonner";
 
 export function LoginForm() {
 	const router = useRouter();
-	const { setUser, setToken } = useAuthStore();
+	const { apiKey, setUser, setToken, setApiKey } = useAuthStore();
 
 	const {
 		register,
@@ -35,6 +35,7 @@ export function LoginForm() {
 		try {
 			const response = await authApi.login(data);
 			setToken(response.token);
+			setApiKey(response.apiKey ?? apiKey);
 			setUser(response.user);
 			toast.success("Welcome back!");
 			router.push("/dashboard");

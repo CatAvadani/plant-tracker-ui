@@ -8,9 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePlants } from "@/hooks/usePlants";
 import { HealthStatus } from "@/lib/types";
-import { useAuthStore } from "@/store/authStore";
-import { AlertCircle, Droplets, Leaf, Plus, Settings, Sprout } from "lucide-react";
-import Link from "next/link";
+import { AlertCircle, Droplets, Leaf, Plus, Sprout } from "lucide-react";
 import { useMemo, useState } from "react";
 
 const statCards = [
@@ -42,7 +40,6 @@ const statCards = [
 
 export default function DashboardPage() {
 	const [formOpen, setFormOpen] = useState(false);
-	const apiKey = useAuthStore((state) => state.apiKey);
 	const { data: plants = [], isLoading, isError } = usePlants();
 
 	const stats = useMemo(
@@ -81,31 +78,11 @@ export default function DashboardPage() {
 					type="button"
 					className="hidden bg-[#2f6f4e] text-white hover:bg-[#285f43] sm:inline-flex"
 					onClick={() => setFormOpen(true)}
-					disabled={!apiKey}
 				>
 					<Plus className="size-4" />
 					Add Plant
 				</Button>
 			</div>
-
-			{!apiKey && (
-				<Card className="mb-6 border-[#d8cab5] bg-[#fff8ed] dark:border-white/10 dark:bg-[#271f15]">
-					<CardContent className="flex flex-col gap-4 py-1 sm:flex-row sm:items-center sm:justify-between">
-						<div>
-							<p className="font-medium">Generate an API key to load plants.</p>
-							<p className="mt-1 text-sm text-muted-foreground">
-								Plant requests use your JWT plus an API key from settings.
-							</p>
-						</div>
-						<Button asChild variant="outline">
-							<Link href="/settings">
-								<Settings className="size-4" />
-								Settings
-							</Link>
-						</Button>
-					</CardContent>
-				</Card>
-			)}
 
 			<div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
 				{statCards.map((card) => {
@@ -127,7 +104,7 @@ export default function DashboardPage() {
 			</div>
 
 			<div className="mt-6">
-				{isLoading && apiKey ? (
+				{isLoading ? (
 					<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
 						{Array.from({ length: 6 }).map((_, index) => (
 							<Card key={index} className="border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
@@ -153,7 +130,7 @@ export default function DashboardPage() {
 								Could not load plants.
 							</p>
 							<p className="mt-1 text-sm text-red-700/80 dark:text-red-200/80">
-								Check your API key and backend connection.
+								Check your connection and try again.
 							</p>
 						</CardContent>
 					</Card>
@@ -163,7 +140,7 @@ export default function DashboardPage() {
 							<PlantCard key={plant.id} plant={plant} />
 						))}
 					</div>
-				) : apiKey ? (
+				) : (
 					<Card className="border-dashed border-[#d8cab5] bg-white/70 dark:border-white/15 dark:bg-white/5">
 						<CardContent className="flex min-h-72 flex-col items-center justify-center py-10 text-center">
 							<div className="grid size-14 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
@@ -184,7 +161,7 @@ export default function DashboardPage() {
 							</Button>
 						</CardContent>
 					</Card>
-				) : null}
+				)}
 			</div>
 
 			<Button
@@ -192,7 +169,6 @@ export default function DashboardPage() {
 				size="icon-lg"
 				className="fixed bottom-5 right-5 z-20 size-14 rounded-full bg-[#2f6f4e] text-white shadow-xl hover:bg-[#285f43] sm:hidden"
 				onClick={() => setFormOpen(true)}
-				disabled={!apiKey}
 			>
 				<Plus className="size-6" />
 				<span className="sr-only">Add Plant</span>

@@ -2,6 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import {
+	Dialog,
+	DialogContent,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -21,7 +26,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const navItems = [
 	{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -38,32 +43,17 @@ function getInitials(name?: string, email?: string) {
 		.join("");
 }
 
-function subscribeToHydration(onStoreChange: () => void) {
-	const unsubscribeFinish = useAuthStore.persist.onFinishHydration(onStoreChange);
-	const unsubscribeHydrate = useAuthStore.persist.onHydrate(onStoreChange);
-
-	return () => {
-		unsubscribeFinish();
-		unsubscribeHydrate();
-	};
-}
-
 export function DashboardShell({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
-	const { user, token, logout } = useAuthStore();
-	const hydrated = useSyncExternalStore(
-		subscribeToHydration,
-		() => useAuthStore.persist.hasHydrated(),
-		() => true,
-	);
+	const { user, token, logout, hasHydrated } = useAuthStore();
 	const [mobileOpen, setMobileOpen] = useState(false);
 
 	useEffect(() => {
-		if (hydrated && (!token || !user)) {
+		if (hasHydrated && (!token || !user)) {
 			router.push("/login");
 		}
-	}, [hydrated, token, user, router]);
+	}, [hasHydrated, token, user, router]);
 
 	const pageTitle = useMemo(() => {
 		if (pathname === "/settings") return "Settings";
@@ -75,7 +65,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 		router.push("/login");
 	};
 
-	if (!hydrated || !token || !user) return null;
+	if (!hasHydrated || !token || !user) return null;
 
 	const sidebar = (
 		<div className="flex h-full flex-col bg-[#f7f2e8] text-[#253326] dark:bg-[#17241c] dark:text-[#eef4ea]">
@@ -133,17 +123,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 				{sidebar}
 			</aside>
 
-			{mobileOpen && (
-				<div className="fixed inset-0 z-40 lg:hidden">
-					<button
-						type="button"
-						aria-label="Close navigation"
-						className="absolute inset-0 bg-black/30 backdrop-blur-sm"
-						onClick={() => setMobileOpen(false)}
-					/>
-					<div className="relative h-full w-72 shadow-2xl">{sidebar}</div>
-				</div>
-			)}
+			<Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
+				<DialogContent className="left-0 top-0 h-dvh max-w-72 translate-x-0 translate-y-0 overflow-hidden rounded-none border-r border-[#e1d7c5] bg-transparent p-0 shadow-2xl lg:hidden dark:border-white/10">
+					<DialogTitle className="sr-only">Navigation</DialogTitle>
+					{sidebar}
+				</DialogContent>
+			</Dialog>
 
 			<div className="lg:pl-64">
 				<header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#e5dccd] bg-[#fbfaf6]/90 px-4 backdrop-blur-md sm:px-6 dark:border-white/10 dark:bg-[#101912]/88">

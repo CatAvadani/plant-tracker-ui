@@ -24,6 +24,7 @@ export interface User {
 
 export interface AuthResponse {
 	token: string;
+	apiKey: string | null;
 	user: User;
 }
 

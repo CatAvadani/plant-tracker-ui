@@ -10,7 +10,7 @@ Plant Tracker UI is a polished Next.js frontend for managing a personal plant co
 - Plant dashboard with collection stats, loading skeletons, empty states, and responsive plant cards
 - Add and edit plant form with validation, watering frequency slider, health status control, and notes
 - Plant actions for watering, editing, and deleting
-- Settings page for profile display and API key generation/copying
+- Settings page for profile display
 - Dark mode-ready styling with Tailwind `dark:` classes
 
 ## Tech Stack
@@ -33,13 +33,13 @@ Install dependencies:
 npm install
 ```
 
-Create a local environment file:
+Create a `.env.local` file:
 
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
-Use the URL and port that your .NET API is running on.
+Use the URL and port that your .NET API is running on. Restart the development server after changing `.env.local`.
 
 Start the development server:
 
@@ -67,7 +67,9 @@ Plant API calls send both:
 - `Authorization: Bearer {token}`
 - `X-Api-Key: {apiKey}`
 
-After logging in, generate an API key from the Settings page before using the plant dashboard.
+The UI manages API key generation internally after login. The key is not shown to users.
+
+Watering a plant is implemented as `PUT /api/plants/{id}` with `lastWatered` updated to today.
 
 ## Project Structure
 
