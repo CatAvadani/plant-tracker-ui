@@ -130,7 +130,7 @@ export default function DashboardPage() {
 								Could not load plants.
 							</p>
 							<p className="mt-1 text-sm text-red-700/80 dark:text-red-200/80">
-								Check your API key and backend connection.
+								Check your connection and try again.
 							</p>
 						</CardContent>
 					</Card>

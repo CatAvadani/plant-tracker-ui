@@ -35,6 +35,19 @@ async function getOrCreateApiKey(
 	return response.apiKey;
 }
 
+async function getCredentials(
+	token: string | null,
+	apiKey: string | null,
+	setApiKey: (apiKey: string | null) => void,
+) {
+	if (!token) throw new Error("Missing token");
+
+	return {
+		token,
+		apiKey: await getOrCreateApiKey(token, apiKey, setApiKey),
+	};
+}
+
 export function usePlants() {
 	const { token, apiKey, setApiKey } = useCredentials();
 
@@ -79,8 +92,8 @@ export function useCreatePlant() {
 
 	return useMutation({
 		mutationFn: async (data: PlantFormData) => {
-			const key = await getOrCreateApiKey(token, apiKey, setApiKey);
-			return plantApi.create(data, token!, key);
+			const credentials = await getCredentials(token, apiKey, setApiKey);
+			return plantApi.create(data, credentials.token, credentials.apiKey);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
@@ -94,8 +107,8 @@ export function useUpdatePlant() {
 
 	return useMutation({
 		mutationFn: async ({ id, data }: { id: number; data: PlantFormData }) => {
-			const key = await getOrCreateApiKey(token, apiKey, setApiKey);
-			return plantApi.update(id, data, token!, key);
+			const credentials = await getCredentials(token, apiKey, setApiKey);
+			return plantApi.update(id, data, credentials.token, credentials.apiKey);
 		},
 		onSuccess: (plant) => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
@@ -110,8 +123,8 @@ export function useDeletePlant() {
 
 	return useMutation({
 		mutationFn: async (id: number) => {
-			const key = await getOrCreateApiKey(token, apiKey, setApiKey);
-			return plantApi.delete(id, token!, key);
+			const credentials = await getCredentials(token, apiKey, setApiKey);
+			return plantApi.delete(id, credentials.token, credentials.apiKey);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });

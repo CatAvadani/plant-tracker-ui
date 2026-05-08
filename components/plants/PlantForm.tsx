@@ -28,20 +28,32 @@ type PlantFormProps = {
 
 function toDateInput(value?: string) {
 	if (!value) return "";
+	if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+
 	const date = new Date(value);
 	if (Number.isNaN(date.getTime())) return "";
-	return date.toISOString().slice(0, 10);
+	return formatLocalDate(date);
 }
 
-const defaultValues: PlantFormData = {
-	name: "",
-	species: "",
-	location: "",
-	wateringFrequencyDays: 7,
-	lastWatered: new Date().toISOString().slice(0, 10),
-	healthStatus: HealthStatus.Thriving,
-	notes: "",
-};
+function formatLocalDate(date: Date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+
+	return `${year}-${month}-${day}`;
+}
+
+function getDefaultValues(): PlantFormData {
+	return {
+		name: "",
+		species: "",
+		location: "",
+		wateringFrequencyDays: 7,
+		lastWatered: formatLocalDate(new Date()),
+		healthStatus: HealthStatus.Thriving,
+		notes: "",
+	};
+}
 
 export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 	const createPlant = useCreatePlant();
@@ -57,7 +69,7 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 		formState: { errors },
 	} = useForm<PlantFormData>({
 		resolver: zodResolver(plantSchema),
-		defaultValues,
+		defaultValues: getDefaultValues(),
 	});
 	const frequency = useWatch({ control, name: "wateringFrequencyDays" });
 
@@ -75,7 +87,7 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 						healthStatus: plant.healthStatus,
 						notes: plant.notes || "",
 					}
-				: defaultValues,
+				: getDefaultValues(),
 		);
 	}, [open, plant, reset]);
 

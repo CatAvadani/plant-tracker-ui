@@ -2,6 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import {
+	Dialog,
+	DialogContent,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -118,17 +123,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 				{sidebar}
 			</aside>
 
-			{mobileOpen && (
-				<div className="fixed inset-0 z-40 lg:hidden">
-					<button
-						type="button"
-						aria-label="Close navigation"
-						className="absolute inset-0 bg-black/30 backdrop-blur-sm"
-						onClick={() => setMobileOpen(false)}
-					/>
-					<div className="relative h-full w-72 shadow-2xl">{sidebar}</div>
-				</div>
-			)}
+			<Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
+				<DialogContent className="left-0 top-0 h-dvh max-w-72 translate-x-0 translate-y-0 overflow-hidden rounded-none border-r border-[#e1d7c5] bg-transparent p-0 shadow-2xl lg:hidden dark:border-white/10">
+					<DialogTitle className="sr-only">Navigation</DialogTitle>
+					{sidebar}
+				</DialogContent>
+			</Dialog>
 
 			<div className="lg:pl-64">
 				<header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#e5dccd] bg-[#fbfaf6]/90 px-4 backdrop-blur-md sm:px-6 dark:border-white/10 dark:bg-[#101912]/88">
