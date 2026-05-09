@@ -24,10 +24,20 @@ export interface User {
 
 export interface AuthResponse {
 	token: string;
-	apiKey: string | null;
+	apiKey: string;
 	user: User;
 }
 
 export interface ApiKeyResponse {
 	apiKey: string;
+}
+
+export interface LoginResponse {
+	token: string;
+	expiresAt: string;
+	user?: User;
+}
+
+export interface UpdateProfileRequest {
+	displayName?: string | null;
 }

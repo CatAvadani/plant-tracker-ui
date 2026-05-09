@@ -17,6 +17,10 @@ export const loginSchema = z.object({
 	password: z.string().min(1, "Password is required"),
 });
 
+export const profileSchema = z.object({
+	displayName: z.string().max(100, "Display name must be 100 characters or less"),
+});
+
 export const plantSchema = z.object({
 	name: z.string().min(1, "Plant name is required"),
 	species: z.string().optional(),
@@ -32,4 +36,5 @@ export const plantSchema = z.object({
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
+export type ProfileFormData = z.infer<typeof profileSchema>;
 export type PlantFormData = z.infer<typeof plantSchema>;

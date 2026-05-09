@@ -1,6 +1,11 @@
 import api from "./api";
-import axios from "axios";
-import type { ApiKeyResponse, AuthResponse } from "./types";
+import type {
+	ApiKeyResponse,
+	AuthResponse,
+	LoginResponse,
+	UpdateProfileRequest,
+	User,
+} from "./types";
 import type { LoginFormData, RegisterFormData } from "./validators";
 
 function parseJwt(token: string): Record<string, unknown> {
@@ -31,26 +36,35 @@ function getClaim(payload: Record<string, unknown>, ...keys: string[]): string {
 	throw new Error(`Missing JWT claim: ${keys.join(" or ")}`);
 }
 
-async function generateApiKeyForToken(token: string): Promise<string | null> {
-	try {
-		const response = await api.post<ApiKeyResponse>(
-			"/api/apikey/generate",
-			{},
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
+async function generateApiKeyForToken(token: string): Promise<string> {
+	const response = await api.post<ApiKeyResponse>(
+		"/api/apikey/generate",
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${token}`,
 			},
-		);
+		},
+	);
 
-		return response.data.apiKey;
-	} catch (error) {
-		if (axios.isAxiosError(error) && error.response?.status === 409) {
-			return null;
-		}
+	return response.data.apiKey;
+}
 
-		throw error;
-	}
+function userFromToken(token: string): User {
+	const payload = parseJwt(token);
+	const nameIdClaim =
+		"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+	const emailClaim =
+		"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+
+	return {
+		id: getClaim(payload, nameIdClaim, "sub"),
+		email: getClaim(payload, emailClaim, "email"),
+		displayName:
+			typeof payload.displayName === "string" && payload.displayName.length > 0
+				? payload.displayName
+				: undefined,
+	};
 }
 
 export const authApi = {
@@ -60,25 +74,13 @@ export const authApi = {
 	},
 
 	login: async (data: LoginFormData): Promise<AuthResponse> => {
-		const response = await api.post("/api/auth/login", data);
+		const response = await api.post<LoginResponse>("/api/auth/login", data);
 		const { token } = response.data;
 		const apiKey = await generateApiKeyForToken(token);
-		const payload = parseJwt(token);
-		const nameIdClaim =
-			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-		const emailClaim =
-			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 		return {
 			token,
 			apiKey,
-			user: {
-				id: getClaim(payload, nameIdClaim, "sub"),
-				email: getClaim(payload, emailClaim, "email"),
-				displayName:
-					typeof payload.displayName === "string"
-						? payload.displayName
-						: undefined,
-			},
+			user: response.data.user ?? userFromToken(token),
 		};
 	},
 
@@ -92,6 +94,18 @@ export const authApi = {
 				},
 			},
 		);
+		return response.data;
+	},
+
+	updateProfile: async (
+		token: string,
+		data: UpdateProfileRequest,
+	): Promise<User> => {
+		const response = await api.patch<User>("/api/users/me", data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return response.data;
 	},
 };
