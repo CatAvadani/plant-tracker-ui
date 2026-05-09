@@ -27,6 +27,7 @@ import {
 	MoreHorizontal,
 	Trash2,
 } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -118,8 +119,19 @@ export function PlantCard({ plant }: { plant: Plant }) {
 			<Card className="border border-[#e6ddcf] bg-white/90 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#17241c]">
 				<CardHeader className="gap-3">
 					<div className="flex items-start gap-3">
-						<div className="grid size-12 shrink-0 place-items-center rounded-lg bg-[#e2efd7] text-[#2f6f4e] dark:bg-[#254431] dark:text-[#b6e2be]">
-							<Leaf className="size-6" />
+						<div className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-lg bg-[#e2efd7] text-[#2f6f4e] dark:bg-[#254431] dark:text-[#b6e2be]">
+							{plant.imageUrl ? (
+								<Image
+									src={plant.imageUrl}
+									alt=""
+									fill
+									sizes="48px"
+									unoptimized
+									className="h-full w-full rounded-lg object-cover"
+								/>
+							) : (
+								<Leaf className="size-6" />
+							)}
 						</div>
 						<div className="min-w-0 flex-1">
 							<CardTitle className="truncate text-lg">{plant.name}</CardTitle>

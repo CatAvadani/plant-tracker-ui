@@ -1,5 +1,5 @@
 import api from "./api";
-import type { Plant } from "./types";
+import type { ImageUploadResponse, Plant } from "./types";
 import type { PlantFormData } from "./validators";
 
 export const plantApi = {
@@ -63,5 +63,22 @@ export const plantApi = {
 				"X-Api-Key": apiKey,
 			},
 		});
+	},
+
+	uploadImage: async (
+		file: File,
+		token: string,
+		apiKey: string,
+	): Promise<ImageUploadResponse> => {
+		const formData = new FormData();
+		formData.append("file", file);
+
+		const response = await api.post("/api/plants/image", formData, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"X-Api-Key": apiKey,
+			},
+		});
+		return response.data;
 	},
 };

@@ -10,13 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreatePlant, useUpdatePlant } from "@/hooks/usePlants";
+import {
+	useCreatePlant,
+	useUpdatePlant,
+	useUploadPlantImage,
+} from "@/hooks/usePlants";
 import { HealthStatus, type Plant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { plantSchema, type PlantFormData } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Leaf, Save } from "lucide-react";
-import { useEffect } from "react";
+import axios from "axios";
+import { ImagePlus, Leaf, Save, Upload } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -52,14 +58,29 @@ function getDefaultValues(): PlantFormData {
 		lastWatered: formatLocalDate(new Date()),
 		healthStatus: HealthStatus.Thriving,
 		notes: "",
+		imageUrl: undefined,
 	};
+}
+
+function getErrorMessage(error: unknown) {
+	if (axios.isAxiosError(error)) {
+		const message = error.response?.data?.message;
+		if (typeof message === "string" && message.length > 0) {
+			return message;
+		}
+	}
+
+	return null;
 }
 
 export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 	const createPlant = useCreatePlant();
 	const updatePlant = useUpdatePlant();
+	const uploadImage = useUploadPlantImage();
 	const isEditing = Boolean(plant);
-	const isPending = createPlant.isPending || updatePlant.isPending;
+	const isPending =
+		createPlant.isPending || updatePlant.isPending || uploadImage.isPending;
+	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const {
 		register,
@@ -86,19 +107,55 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 						lastWatered: toDateInput(plant.lastWatered),
 						healthStatus: plant.healthStatus,
 						notes: plant.notes || "",
+						imageUrl: plant.imageUrl || undefined,
 					}
 				: getDefaultValues(),
 		);
 	}, [open, plant, reset]);
 
+	const selectedImagePreview = useMemo(
+		() => (imageFile ? URL.createObjectURL(imageFile) : null),
+		[imageFile],
+	);
+	const imagePreview = selectedImagePreview || plant?.imageUrl || null;
+
+	useEffect(() => {
+		if (!selectedImagePreview) return;
+
+		return () => URL.revokeObjectURL(selectedImagePreview);
+	}, [selectedImagePreview]);
+
+	const handleOpenChange = (nextOpen: boolean) => {
+		if (!nextOpen) {
+			setImageFile(null);
+		}
+
+		onOpenChange(nextOpen);
+	};
+
 	const onSubmit = async (data: PlantFormData) => {
 		try {
+			if (imageFile && !imageFile.type.startsWith("image/")) {
+				toast.error("Choose an image file.");
+				return;
+			}
+
+			if (imageFile && imageFile.size > 5 * 1024 * 1024) {
+				toast.error("Image file must be 5 MB or smaller.");
+				return;
+			}
+
+			const uploadedImageUrl = imageFile
+				? (await uploadImage.mutateAsync(imageFile)).imageUrl
+				: undefined;
+
 			const payload = {
 				...data,
 				lastWatered: data.lastWatered || undefined,
 				species: data.species || undefined,
 				location: data.location || undefined,
 				notes: data.notes || undefined,
+				imageUrl: uploadedImageUrl || plant?.imageUrl || undefined,
 			};
 
 			if (plant) {
@@ -109,14 +166,21 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 				toast.success("Plant added.");
 			}
 
-			onOpenChange(false);
-		} catch {
-			toast.error(isEditing ? "Could not update plant." : "Could not add plant.");
+			handleOpenChange(false);
+		} catch (error) {
+			const message =
+				getErrorMessage(error) ||
+				(isEditing ? "Could not update plant." : "Could not add plant.");
+			toast.error(message);
 		}
 	};
 
+	const onInvalid = () => {
+		toast.error("Check the highlighted fields and try again.");
+	};
+
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent className="left-auto right-0 top-0 h-dvh max-w-none translate-x-0 translate-y-0 content-start overflow-y-auto rounded-none border-l border-[#e1d7c5] bg-[#fbfaf6] p-0 sm:max-w-md dark:border-white/10 dark:bg-[#101912]">
 				<div className="border-b border-[#e6ddcf] bg-[#f7f2e8] p-5 dark:border-white/10 dark:bg-[#17241c]">
 					<DialogHeader>
@@ -130,7 +194,51 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 					</DialogHeader>
 				</div>
 
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-5">
+				<form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-5 p-5">
+					<div className="space-y-3">
+						<Label htmlFor="plantImage">Plant Image</Label>
+						<div className="flex items-center gap-3">
+							<label
+								htmlFor="plantImage"
+								className="group relative grid size-20 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-lg border border-[#d8cab5] bg-[#e8f2df] text-[#2f6f4e] transition-all hover:border-[#2f6f4e] hover:bg-[#dcebd1] hover:shadow-sm focus-visible:border-[#2f6f4e] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[#2f6f4e]/25 dark:border-white/15 dark:bg-[#203d2c] dark:text-[#a8e0b1] dark:hover:border-[#a8e0b1] dark:hover:bg-[#294d37]"
+								tabIndex={0}
+								onKeyDown={(event) => {
+									if (event.key === "Enter" || event.key === " ") {
+										event.preventDefault();
+										document.getElementById("plantImage")?.click();
+									}
+								}}
+							>
+								{imagePreview ? (
+									<Image
+										src={imagePreview}
+										alt=""
+										fill
+										sizes="80px"
+										unoptimized
+										className="h-full w-full object-cover"
+									/>
+								) : (
+									<ImagePlus className="size-7 transition-transform group-hover:scale-105" />
+								)}
+							</label>
+							<div className="min-w-0 flex-1">
+								<Input
+									id="plantImage"
+									type="file"
+									accept="image/*"
+									className="cursor-pointer file:cursor-pointer"
+									onChange={(event) =>
+										setImageFile(event.target.files?.[0] ?? null)
+									}
+								/>
+								<p className="mt-1 text-xs text-muted-foreground">
+									JPG, PNG, or WebP up to 5 MB.
+								</p>
+							</div>
+						</div>
+					</div>
+
 					<div className="space-y-2">
 						<Label htmlFor="name">Name</Label>
 						<Input
@@ -232,7 +340,7 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 							type="button"
 							variant="outline"
 							className="flex-1"
-							onClick={() => onOpenChange(false)}
+							onClick={() => handleOpenChange(false)}
 						>
 							Cancel
 						</Button>
@@ -241,8 +349,12 @@ export function PlantForm({ open, onOpenChange, plant }: PlantFormProps) {
 							className="flex-1 bg-[#2f6f4e] text-white hover:bg-[#285f43]"
 							disabled={isPending}
 						>
-							<Save className="size-4" />
-							{isPending ? "Saving..." : "Save"}
+							{uploadImage.isPending ? (
+								<Upload className="size-4" />
+							) : (
+								<Save className="size-4" />
+							)}
+							{uploadImage.isPending ? "Uploading..." : isPending ? "Saving..." : "Save"}
 						</Button>
 					</div>
 				</form>

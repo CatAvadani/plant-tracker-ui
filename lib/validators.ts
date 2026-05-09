@@ -32,6 +32,7 @@ export const plantSchema = z.object({
 	lastWatered: z.string().optional(),
 	healthStatus: z.number().min(0).max(2),
 	notes: z.string().optional(),
+	imageUrl: z.string().url().nullish(),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;

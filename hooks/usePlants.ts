@@ -132,6 +132,17 @@ export function useDeletePlant() {
 	});
 }
 
+export function useUploadPlantImage() {
+	const { token, apiKey, setApiKey } = useCredentials();
+
+	return useMutation({
+		mutationFn: async (file: File) => {
+			const credentials = await getCredentials(token, apiKey, setApiKey);
+			return plantApi.uploadImage(file, credentials.token, credentials.apiKey);
+		},
+	});
+}
+
 export function useWaterPlant() {
 	const updatePlant = useUpdatePlant();
 
@@ -147,6 +158,7 @@ export function useWaterPlant() {
 					lastWatered: new Date().toISOString(),
 					healthStatus: plant.healthStatus,
 					notes: plant.notes,
+					imageUrl: plant.imageUrl,
 				},
 			}),
 	});
