@@ -10,6 +10,7 @@ Plant Tracker UI is a polished Next.js frontend for managing a personal plant co
 - Plant dashboard with collection stats, loading skeletons, empty states, and responsive plant cards
 - Add and edit plant form with validation, watering frequency slider, health status control, and notes
 - Plant actions for watering, editing, and deleting
+- Plant image upload and card image display
 - Settings page for editing display name while keeping email read-only
 - Dark mode-ready styling with Tailwind `dark:` classes
 
@@ -60,6 +61,7 @@ The frontend expects the backend to expose:
 - `GET /api/plants`
 - `GET /api/plants/{id}`
 - `POST /api/plants`
+- `POST /api/plants/image`
 - `PUT /api/plants/{id}`
 - `DELETE /api/plants/{id}`
 
@@ -73,6 +75,8 @@ The UI creates or retrieves the API key automatically after login. API-key detai
 Profile updates use `PATCH /api/users/me` with `displayName`; email is read-only in the UI.
 
 Watering a plant is implemented as `PUT /api/plants/{id}` with `lastWatered` updated to today.
+
+Image upload uses `POST /api/plants/image` with multipart form data and expects `{ "imageUrl": "..." }`. The backend needs Cloudinary credentials configured with `Cloudinary:CloudName`, `Cloudinary:ApiKey`, and `Cloudinary:ApiSecret` or matching `CLOUDINARY_*` environment variables.
 
 ## Project Structure
 

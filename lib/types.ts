@@ -13,6 +13,7 @@ export interface Plant {
 	lastWatered?: string;
 	healthStatus: HealthStatus;
 	notes?: string;
+	imageUrl?: string | null;
 	createdAt: string;
 }
 
@@ -38,6 +39,16 @@ export interface LoginResponse {
 	user?: User;
 }
 
+export interface RefreshResponse {
+	token: string;
+	expiresAt: string;
+	user: User;
+}
+
 export interface UpdateProfileRequest {
 	displayName?: string | null;
+}
+
+export interface ImageUploadResponse {
+	imageUrl: string;
 }
