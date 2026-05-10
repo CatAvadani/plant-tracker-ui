@@ -25,7 +25,6 @@ export interface User {
 
 export interface AuthResponse {
 	token: string;
-	refreshToken: string;
 	apiKey: string;
 	user: User;
 }
@@ -37,14 +36,12 @@ export interface ApiKeyResponse {
 export interface LoginResponse {
 	token: string;
 	expiresAt: string;
-	refreshToken: string;
 	user?: User;
 }
 
 export interface RefreshResponse {
 	token: string;
 	expiresAt: string;
-	refreshToken: string;
 	user: User;
 }
 

@@ -21,7 +21,7 @@ import { toast } from "sonner";
 
 export function LoginForm() {
 	const router = useRouter();
-	const { setUser, setToken, setRefreshToken, setApiKey } = useAuthStore();
+	const { setUser, setToken, setApiKey } = useAuthStore();
 
 	const {
 		register,
@@ -35,7 +35,6 @@ export function LoginForm() {
 		try {
 			const response = await authApi.login(data);
 			setToken(response.token);
-			setRefreshToken(response.refreshToken);
 			setApiKey(response.apiKey);
 			setUser(response.user);
 			toast.success("Welcome back!");

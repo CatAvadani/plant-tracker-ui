@@ -1,6 +1,6 @@
-import axios from "axios";
-import type { RefreshResponse } from "./types";
 import { useAuthStore } from "@/store/authStore";
+import axios, { type AxiosRequestHeaders } from "axios";
+import type { RefreshResponse } from "./types";
 
 const api = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -10,6 +10,19 @@ const api = axios.create({
 type RetriableRequest = NonNullable<Parameters<typeof api.request>[0]> & {
 	_retry?: boolean;
 };
+
+let refreshPromise: Promise<RefreshResponse> | null = null;
+
+async function refreshAccessToken() {
+	refreshPromise ??= api
+		.post<RefreshResponse>("/api/auth/refresh")
+		.then((response) => response.data)
+		.finally(() => {
+			refreshPromise = null;
+		});
+
+	return refreshPromise;
+}
 
 api.interceptors.response.use(
 	(response) => response,
@@ -29,33 +42,23 @@ api.interceptors.response.use(
 			return Promise.reject(error);
 		}
 
-		const { refreshToken, setToken, setRefreshToken, setUser, logout } =
-			useAuthStore.getState();
-		if (!refreshToken) {
-			logout();
-			return Promise.reject(error);
-		}
-
 		originalRequest._retry = true;
 
 		try {
-			const response = await axios.post<RefreshResponse>(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`,
-				{ refreshToken },
-			);
-			const { token, refreshToken: nextRefreshToken, user } = response.data;
+			const { token, user } = await refreshAccessToken();
+			const { setToken, setUser } = useAuthStore.getState();
 
 			setToken(token);
-			setRefreshToken(nextRefreshToken);
 			setUser(user);
 
 			originalRequest.headers = {
 				...originalRequest.headers,
 				Authorization: `Bearer ${token}`,
-			};
+			} as AxiosRequestHeaders;
 
 			return api.request(originalRequest);
 		} catch (refreshError) {
+			const { logout } = useAuthStore.getState();
 			logout();
 			return Promise.reject(refreshError);
 		}
