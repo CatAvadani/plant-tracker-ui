@@ -4,6 +4,7 @@ import type {
 	ApiKeyResponse,
 	AuthResponse,
 	LoginResponse,
+	RefreshResponse,
 	UpdateProfileRequest,
 	User,
 } from "./types";
@@ -63,9 +64,17 @@ export const authApi = {
 		const apiKey = await generateApiKeyForToken(token);
 		return {
 			token,
+			refreshToken: response.data.refreshToken,
 			apiKey,
 			user: response.data.user ?? userFromToken(token),
 		};
+	},
+
+	refresh: async (refreshToken: string): Promise<RefreshResponse> => {
+		const response = await api.post<RefreshResponse>("/api/auth/refresh", {
+			refreshToken,
+		});
+		return response.data;
 	},
 
 	generateApiKey: async (token: string): Promise<ApiKeyResponse> => {

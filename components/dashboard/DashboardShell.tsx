@@ -14,7 +14,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { isJwtExpired } from "@/lib/jwt";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import {
@@ -49,19 +48,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
 	const { user, token, logout, hasHydrated } = useAuthStore();
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const tokenExpired = token ? isJwtExpired(token) : false;
 
 	useEffect(() => {
-		if (hasHydrated && tokenExpired) {
-			logout();
-			router.push("/login");
-			return;
-		}
-
 		if (hasHydrated && (!token || !user)) {
 			router.push("/login");
 		}
-	}, [hasHydrated, token, tokenExpired, user, logout, router]);
+	}, [hasHydrated, token, user, router]);
 
 	const pageTitle = useMemo(() => {
 		if (pathname === "/settings") return "Settings";
@@ -73,7 +65,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 		router.push("/login");
 	};
 
-	if (!hasHydrated || !token || !user || tokenExpired) return null;
+	if (!hasHydrated || !token || !user) return null;
 
 	const sidebar = (
 		<div className="flex h-full flex-col bg-[#f7f2e8] text-[#253326] dark:bg-[#17241c] dark:text-[#eef4ea]">

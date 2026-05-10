@@ -4,7 +4,10 @@ export function parseJwt(token: string): Record<string, unknown> {
 		throw new Error("Invalid JWT token");
 	}
 
-	const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+	const base64 = base64Url
+		.replace(/-/g, "+")
+		.replace(/_/g, "/")
+		.padEnd(Math.ceil(base64Url.length / 4) * 4, "=");
 	const jsonPayload = decodeURIComponent(
 		atob(base64)
 			.split("")
@@ -20,7 +23,7 @@ export function isJwtExpired(token: string) {
 		const payload = parseJwt(token);
 		const expiresAt = payload.exp;
 
-		if (typeof expiresAt !== "number") {
+		if (typeof expiresAt !== "number" || !Number.isFinite(expiresAt)) {
 			return true;
 		}
 
