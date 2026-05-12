@@ -33,9 +33,22 @@ import { toast } from "sonner";
 
 const dayMs = 24 * 60 * 60 * 1000;
 
+function parsePlantDate(value?: string) {
+	if (!value) return null;
+
+	const dateOnly = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+	if (dateOnly) {
+		const [, year, month, day] = dateOnly;
+		return new Date(Number(year), Number(month) - 1, Number(day));
+	}
+
+	const date = new Date(value);
+	return Number.isNaN(date.getTime()) ? null : date;
+}
+
 export function getNextWateringDate(plant: Plant) {
-	const lastWatered = plant.lastWatered ? new Date(plant.lastWatered) : null;
-	if (!lastWatered || Number.isNaN(lastWatered.getTime())) return null;
+	const lastWatered = parsePlantDate(plant.lastWatered);
+	if (!lastWatered) return null;
 
 	const next = new Date(lastWatered);
 	next.setDate(next.getDate() + plant.wateringFrequencyDays);
@@ -53,10 +66,30 @@ export function getDaysUntilWatering(plant: Plant) {
 	return Math.ceil((next.getTime() - today.getTime()) / dayMs);
 }
 
+export function getWateringProgress(plant: Plant) {
+	const lastWatered = parsePlantDate(plant.lastWatered);
+	if (!lastWatered || plant.wateringFrequencyDays <= 0) {
+		return null;
+	}
+
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	lastWatered.setHours(0, 0, 0, 0);
+
+	const elapsedDays = Math.max(
+		0,
+		Math.floor((today.getTime() - lastWatered.getTime()) / dayMs),
+	);
+
+	return Math.min(
+		100,
+		Math.round((elapsedDays / plant.wateringFrequencyDays) * 100),
+	);
+}
+
 function formatDate(value?: string) {
-	if (!value) return "Not recorded";
-	const date = new Date(value);
-	if (Number.isNaN(date.getTime())) return "Not recorded";
+	const date = parsePlantDate(value);
+	if (!date) return "Not recorded";
 
 	return new Intl.DateTimeFormat("en", {
 		month: "short",
@@ -87,14 +120,19 @@ export function PlantCard({ plant }: { plant: Plant }) {
 	const deletePlant = useDeletePlant();
 
 	const daysUntilWatering = useMemo(() => getDaysUntilWatering(plant), [plant]);
+	const wateringProgress = useMemo(() => getWateringProgress(plant), [plant]);
 	const wateringText =
 		daysUntilWatering === null
 			? "Set watering"
 			: daysUntilWatering < 0
-				? `${Math.abs(daysUntilWatering)} days overdue`
+				? `${Math.abs(daysUntilWatering)} ${
+						Math.abs(daysUntilWatering) === 1 ? "day" : "days"
+					} overdue`
 				: daysUntilWatering === 0
 					? "Water today"
 					: `${daysUntilWatering} days left`;
+	const isOverdue = daysUntilWatering !== null && daysUntilWatering < 0;
+	const isDueToday = daysUntilWatering === 0;
 
 	const handleWater = async () => {
 		try {
@@ -191,13 +229,44 @@ export function PlantCard({ plant }: { plant: Plant }) {
 							<span
 								className={cn(
 									"font-medium",
-									daysUntilWatering !== null &&
-										daysUntilWatering <= 0 &&
-										"text-[#b45309] dark:text-amber-300",
+									isOverdue && "text-red-700 dark:text-red-300",
+									isDueToday && "text-[#b45309] dark:text-amber-300",
 								)}
 							>
 								{wateringText}
 							</span>
+						</div>
+					</div>
+					<div className="space-y-2">
+						<div className="flex items-center justify-between text-xs text-muted-foreground">
+							<span>Watering progress</span>
+							<span>
+								{wateringProgress === null
+									? "No history"
+									: `${wateringProgress}%`}
+							</span>
+						</div>
+						<div
+							className={cn(
+								"h-2 overflow-hidden rounded-full bg-[#eee7dc] dark:bg-white/10",
+								wateringProgress === null &&
+									"bg-[#f4efe5] dark:bg-white/[0.07]",
+							)}
+							aria-label="Watering progress"
+							role="progressbar"
+							aria-valuemin={0}
+							aria-valuemax={100}
+							aria-valuenow={wateringProgress ?? 0}
+						>
+							<div
+								className={cn(
+									"h-full rounded-full bg-[#2f6f4e] transition-all",
+									isDueToday && "bg-[#b45309]",
+									isOverdue && "bg-red-600",
+									wateringProgress === null && "bg-transparent",
+								)}
+								style={{ width: `${wateringProgress ?? 0}%` }}
+							/>
 						</div>
 					</div>
 					{plant.notes && (
