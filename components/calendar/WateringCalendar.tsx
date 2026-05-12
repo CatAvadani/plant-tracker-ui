@@ -231,7 +231,10 @@ export function WateringCalendar() {
 							return scheduledDay ? (
 								<Popover key={key}>
 									<PopoverTrigger asChild>
-										<button type="button" className="text-left outline-none">
+										<button
+											type="button"
+											className="text-left outline-none focus-visible:ring-3 focus-visible:ring-[#2f6f4e]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fbfaf6] dark:focus-visible:ring-[#a8e0b1]/40 dark:focus-visible:ring-offset-[#17241c]"
+										>
 											{cell}
 										</button>
 									</PopoverTrigger>

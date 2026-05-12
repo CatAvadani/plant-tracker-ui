@@ -50,7 +50,7 @@ export function useCareLogs(plantId: number) {
 	const { token, apiKey, setApiKey } = useCredentials();
 
 	return useQuery({
-		queryKey: [...careLogsKey, plantId, token, apiKey],
+		queryKey: [...careLogsKey, plantId],
 		queryFn: async () => {
 			if (!token) return [];
 
