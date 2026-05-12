@@ -122,7 +122,7 @@ export default function DashboardPage() {
 	const selectedLocationLabel =
 		locationFilter === "all" ? "All locations" : locationFilter;
 	const hasActiveFilters =
-		searchTerm.length > 0 ||
+		searchTerm.trim().length > 0 ||
 		healthFilter !== "all" ||
 		locationFilter !== "all";
 	const filteredPlants = useMemo(
