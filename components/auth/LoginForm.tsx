@@ -14,14 +14,17 @@ import { authApi } from "@/lib/authApi";
 import { type LoginFormData, loginSchema } from "@/lib/validators";
 import { useAuthStore } from "@/store/authStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export function LoginForm() {
 	const router = useRouter();
 	const { setUser, setToken, setApiKey } = useAuthStore();
+	const [showPassword, setShowPassword] = useState(false);
 
 	const {
 		register,
@@ -66,7 +69,28 @@ export function LoginForm() {
 					</div>
 					<div className="space-y-2">
 						<Label htmlFor="password">Password</Label>
-						<Input id="password" type="password" {...register("password")} />
+						<div className="relative">
+							<Input
+								id="password"
+								type={showPassword ? "text" : "password"}
+								className="pr-10"
+								{...register("password")}
+							/>
+							<button
+								type="button"
+								className="absolute right-1 top-1/2 grid size-7 -translate-y-1/2 cursor-pointer place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+								onClick={() => setShowPassword((visible) => !visible)}
+							>
+								{showPassword ? (
+									<EyeOff className="size-4" />
+								) : (
+									<Eye className="size-4" />
+								)}
+								<span className="sr-only">
+									{showPassword ? "Hide password" : "Show password"}
+								</span>
+							</button>
+						</div>
 						{errors.password && (
 							<p className="text-sm text-destructive">
 								{errors.password.message}
