@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import {
+	CalendarDays,
 	LayoutDashboard,
 	LogOut,
 	Menu,
@@ -30,6 +31,7 @@ import { useEffect, useMemo, useState } from "react";
 
 const navItems = [
 	{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+	{ href: "/calendar", label: "Calendar", icon: CalendarDays },
 	{ href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -57,6 +59,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
 	const pageTitle = useMemo(() => {
 		if (pathname === "/settings") return "Settings";
+		if (pathname === "/calendar") return "Calendar";
 		return "Dashboard";
 	}, [pathname]);
 
