@@ -1,5 +1,7 @@
 "use client";
 
+import { AddCareLogForm } from "@/components/plants/AddCareLogForm";
+import { CareLog } from "@/components/plants/CareLog";
 import { PlantForm } from "@/components/plants/PlantForm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +12,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,6 +31,7 @@ import { cn } from "@/lib/utils";
 import {
 	CalendarDays,
 	Droplets,
+	History,
 	Leaf,
 	MapPin,
 	MoreHorizontal,
@@ -116,6 +126,7 @@ function healthClass(status: HealthStatus) {
 
 export function PlantCard({ plant }: { plant: Plant }) {
 	const [editing, setEditing] = useState(false);
+	const [careLogOpen, setCareLogOpen] = useState(false);
 	const waterPlant = useWaterPlant();
 	const deletePlant = useDeletePlant();
 
@@ -283,9 +294,35 @@ export function PlantCard({ plant }: { plant: Plant }) {
 						<Droplets className="size-4" />
 						{waterPlant.isPending ? "Watering..." : "Water Now"}
 					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						className="w-full border-[#d8cab5] bg-white/70 text-[#57634f] hover:bg-[#f4efe5] dark:border-white/15 dark:bg-white/5 dark:text-[#c4d0bd]"
+						onClick={() => setCareLogOpen(true)}
+					>
+						<History className="size-4" />
+						View Care Log
+					</Button>
 				</CardContent>
 			</Card>
 			<PlantForm open={editing} onOpenChange={setEditing} plant={plant} />
+			<Dialog open={careLogOpen} onOpenChange={setCareLogOpen}>
+				<DialogContent className="max-h-[min(760px,calc(100dvh-2rem))] overflow-y-auto border-[#e1d7c5] bg-[#fbfaf6] sm:max-w-2xl dark:border-white/10 dark:bg-[#101912]">
+					<DialogHeader>
+						<div className="mb-2 grid size-10 place-items-center rounded-lg bg-[#2f6f4e] text-white">
+							<History className="size-5" />
+						</div>
+						<DialogTitle>{plant.name} care log</DialogTitle>
+						<DialogDescription>
+							Track watering, treatments, health checks, and other care events.
+						</DialogDescription>
+					</DialogHeader>
+					<div className="space-y-5">
+						<AddCareLogForm plantId={plant.id} />
+						<CareLog plantId={plant.id} />
+					</div>
+				</DialogContent>
+			</Dialog>
 		</>
 	);
 }
