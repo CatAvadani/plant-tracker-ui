@@ -1,70 +1,17 @@
 "use client";
 
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import { AuthPlantBackdrop } from "@/components/auth/AuthPlantBackdrop";
 import { Leaf, Sprout } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function RegisterPage() {
 	return (
-		<main className="grid min-h-screen bg-[#fbfaf6] text-[#253326] lg:grid-cols-[1.05fr_0.95fr] dark:bg-[#101912] dark:text-[#f5f7f0]">
+		<main className="grid min-h-screen bg-[#fbfaf6] text-[#253326] lg:grid-cols-[1.35fr_0.65fr] dark:bg-[#101912] dark:text-[#f5f7f0]">
 			{/* Left Panel */}
-			<section className="relative hidden overflow-hidden bg-gradient-to-br from-[#1d422f] via-[#4f7f4c] to-[#c9a86a] p-10 text-white lg:flex lg:flex-col lg:justify-between">
-				{/* Animated floating shapes */}
-				<div className="absolute inset-0 overflow-hidden">
-					<motion.div
-						className="absolute left-10 top-20 h-80 w-48 rotate-[-24deg] rounded-full bg-white/10"
-						animate={{
-							y: [0, -22, 0],
-							x: [0, 12, 0],
-							rotate: [-24, -18, -24],
-						}}
-						transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-					/>
-					<motion.div
-						className="absolute right-16 top-10 h-[28rem] w-56 rotate-12 rounded-full bg-white/8"
-						animate={{
-							y: [0, 26, 0],
-							x: [0, -14, 0],
-							rotate: [12, 18, 12],
-						}}
-						transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-					/>
-					<motion.div
-						className="absolute bottom-[-5rem] left-1/4 h-[28rem] w-64 rotate-45 rounded-full bg-[#f2d39c]/25"
-						animate={{
-							y: [0, -18, 0],
-							x: [0, 18, 0],
-							rotate: [45, 38, 45],
-						}}
-						transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-					/>
-					<motion.div
-						className="absolute right-1/3 top-1/2 h-56 w-56 -rotate-6 rounded-full bg-[#7aa766]/20"
-						animate={{
-							y: [0, 20, 0],
-							x: [0, -10, 0],
-						}}
-						transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-					/>
-					<motion.div
-						className="absolute left-20 bottom-1/4 h-48 w-36 rotate-20 rounded-full bg-white/5"
-						animate={{
-							y: [0, -16, 0],
-							x: [0, 8, 0],
-						}}
-						transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-					/>
-					{/* Subtle dot pattern */}
-					<div
-						className="absolute inset-0 opacity-[0.07]"
-						style={{
-							backgroundImage:
-								"radial-gradient(circle, white 1px, transparent 1px)",
-							backgroundSize: "24px 24px",
-						}}
-					/>
-				</div>
+			<section className="relative hidden overflow-hidden bg-gradient-to-br from-[#1d422f] via-[#4f7f4c] to-[#c9a86a] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
+				<AuthPlantBackdrop />
 
 				<Link href="/" className="relative flex items-center gap-3">
 					<span className="grid size-10 place-items-center rounded-lg bg-white/15 ring-1 ring-white/25">
@@ -72,7 +19,7 @@ export default function RegisterPage() {
 					</span>
 					<span className="text-sm font-semibold">Plant Tracker</span>
 				</Link>
-				<div className="relative max-w-xl">
+				<div className="relative max-w-3xl">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -80,12 +27,12 @@ export default function RegisterPage() {
 					>
 						<Leaf className="mb-6 size-12 text-[#e1f5d6]" />
 						<h1
-							className="text-5xl font-semibold leading-tight lg:text-6xl"
+							className="text-5xl font-semibold leading-tight lg:text-7xl"
 							style={{ fontFamily: "var(--font-playfair)" }}
 						>
 							Start a living record of every plant you care for.
 						</h1>
-						<p className="mt-5 text-lg leading-8 text-white/80">
+						<p className="mt-6 max-w-2xl text-xl leading-8 text-white/80">
 							Create a tidy home for watering rhythms, health status, notes,
 							and locations.
 						</p>

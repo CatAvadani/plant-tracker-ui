@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
 	ArrowRight,
 	CalendarDays,
@@ -12,8 +12,8 @@ import {
 	Sprout,
 	Star,
 } from "lucide-react";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const fadeUp = {
 	hidden: { opacity: 0, y: 40 },
@@ -37,15 +37,6 @@ const scaleUp = {
 		opacity: 1,
 		scale: 1,
 		transition: { duration: 0.6, ease: "easeOut" as const },
-	},
-};
-
-const floatingAnimation = {
-	y: [0, -16, 0],
-	transition: {
-		duration: 5,
-		ease: "easeInOut" as const,
-		repeat: Infinity,
 	},
 };
 
@@ -113,7 +104,7 @@ export default function Home() {
 					</Button>
 				</nav>
 
-				<div className="mx-auto grid min-h-[calc(100vh-5.5rem)] max-w-6xl items-center gap-10 py-16 lg:grid-cols-[1fr_0.85fr]">
+				<div className="mx-auto grid min-h-[calc(100vh-5.5rem)] max-w-6xl items-center gap-10 py-16 lg:grid-cols-[1fr_1fr]">
 					<motion.div
 						className="max-w-2xl"
 						initial="hidden"
@@ -198,22 +189,22 @@ export default function Home() {
 										Loved by 2,000+ plant parents
 									</p>
 								</div>
-							</motion.div>
 						</motion.div>
+					</motion.div>
 
-					{/* Hero Illustration — Dashboard mockup + botanical leaves */}
+					{/* Hero Illustration — Two overlapping cards + botanical leaves */}
 					<motion.div
-						className="relative min-h-[28rem]"
+						className="relative mx-auto h-[26rem] w-full max-w-lg"
 						initial={{ opacity: 0, scale: 0.92 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ duration: 0.9, ease: "easeOut" as const, delay: 0.2 }}
 					>
 						{/* Soft ground shadow */}
-						<div className="absolute inset-x-6 bottom-0 h-40 rounded-[50%] bg-[#314833]/15 blur-2xl dark:bg-black/30" />
+						<div className="absolute inset-x-4 bottom-4 h-32 rounded-[50%] bg-[#314833]/15 blur-2xl dark:bg-black/30" />
 
-						{/* Large botanical leaf — behind card */}
+						{/* Large botanical leaf — behind cards */}
 						<motion.svg
-							className="absolute -right-4 -top-4 h-72 w-72 text-[#7aa766]/30 dark:text-[#7aa766]/20"
+							className="absolute right-[-6rem] top-[-5rem] h-[22rem] w-[22rem] text-[#7aa766]/45 dark:text-[#7aa766]/25"
 							viewBox="0 0 200 200"
 							fill="none"
 							animate={{
@@ -242,7 +233,7 @@ export default function Home() {
 
 						{/* Smaller leaf — bottom left */}
 						<motion.svg
-							className="absolute -left-8 bottom-8 h-48 w-48 text-[#5c8f57]/25 dark:text-[#5c8f57]/15"
+							className="absolute left-[-6rem] bottom-[-4rem] h-80 w-80 text-[#5c8f57]/40 dark:text-[#5c8f57]/20"
 							viewBox="0 0 200 200"
 							fill="none"
 							animate={{
@@ -263,98 +254,169 @@ export default function Home() {
 							/>
 						</motion.svg>
 
+						{/* Calendar card — behind dashboard, peeking from upper-right */}
+						<div className="absolute left-1/2 top-4 z-0 w-60 -translate-x-[5%] rotate-[-6deg] rounded-2xl border border-[#e5ddd0] bg-white/80 p-5 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/80">
+							<div className="flex items-center justify-between">
+								<div>
+									<p className="text-[9px] font-medium uppercase tracking-wider text-[#9aa594] dark:text-[#bfccb8]">Watering schedule</p>
+									<p className="text-sm font-bold text-[#1f2d22] dark:text-[#f5f7f0]">May 2026</p>
+								</div>
+								<div className="flex gap-1">
+									<div className="h-6 w-6 rounded-lg border border-[#e5ddd0] bg-[#fbfaf6] dark:border-white/10" />
+									<div className="h-6 w-6 rounded-lg border border-[#e5ddd0] bg-[#fbfaf6] dark:border-white/10" />
+								</div>
+							</div>
+							<div className="mt-3 grid grid-cols-7 gap-1 text-center">
+								{["M","T","W","T","F","S","S"].map((d,i) => (
+									<span key={`mini-${i}`} className="text-[9px] font-medium text-[#9aa594] dark:text-[#bfccb8]">{d}</span>
+								))}
+							</div>
+							<div className="mt-1 grid grid-cols-7 gap-1 text-center">
+								{[
+									{ d: "28", o: true }, { d: "29", o: true }, { d: "30", o: true },
+									{ d: "1" }, { d: "2" }, { d: "3" }, { d: "4" },
+									{ d: "5" }, { d: "6" }, { d: "7" }, { d: "8" },
+									{ d: "9" }, { d: "10" }, { d: "11" },
+									{ d: "12", today: true }, { d: "13" }, { d: "14" }, { d: "15" },
+									{ d: "16" }, { d: "17", event: true }, { d: "18" },
+									{ d: "19", event: true }, { d: "20" }, { d: "21" },
+								].map((day, i) => (
+									<div key={`mini-cell-${i}`} className="py-1">
+										<div className={`mx-auto flex h-6 w-6 items-center justify-center rounded-full text-[9px] ${
+											day.today ? "bg-[#2f6f4e] text-white" :
+											day.event ? "bg-[#e8f5e9] text-[#2f6f4e] dark:bg-[#2f6f4e]/20" :
+											day.o ? "text-[#d8cab5]" : "text-[#5d6a57] dark:text-[#bfccb8]"
+										}`}>{day.d}</div>
+									</div>
+								))}
+							</div>
+							<div className="mt-3 flex items-center gap-3">
+								<div className="flex items-center gap-1">
+									<div className="h-2 w-2 rounded-full bg-[#2f6f4e]" />
+									<span className="text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">Today</span>
+								</div>
+								<div className="flex items-center gap-1">
+									<div className="h-2 w-2 rounded-full bg-[#e8f5e9] dark:bg-[#2f6f4e]/30" />
+									<span className="text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">Watering</span>
+								</div>
+							</div>
+						</div>
+
 						{/* Dashboard preview card */}
-						<motion.div
-							className="absolute left-1/2 top-6 w-64 -translate-x-1/2 rounded-3xl border border-[#e5ddd0] bg-white/90 p-5 shadow-2xl backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/90"
-							animate={floatingAnimation}
-						>
-							{/* Card header */}
+						<div className="absolute left-1/2 top-10 z-10 w-80 -translate-x-[55%] rounded-3xl border border-[#e5ddd0] bg-white/90 p-5 shadow-2xl backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/90">
+							{/* Header */}
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-2">
 									<span className="grid size-7 place-items-center rounded-lg bg-[#2f6f4e] text-white">
 										<Sprout className="size-3.5" />
 									</span>
-									<span className="text-xs font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
-										My Plants
-									</span>
+									<div>
+										<p className="text-[10px] font-medium text-[#9aa594] dark:text-[#bfccb8]">
+											PLANT COLLECTION
+										</p>
+										<p className="text-sm font-bold text-[#1f2d22] dark:text-[#f5f7f0]">
+											Dashboard
+										</p>
+									</div>
 								</div>
-								<span className="text-[10px] font-medium text-[#5d6a57] dark:text-[#bfccb8]">
-									12 total
+								<span className="rounded-full bg-[#e8f5e9] px-2 py-0.5 text-[9px] font-medium text-[#2f6f4e] dark:bg-[#2f6f4e]/20">
+									Live
 								</span>
 							</div>
 
-							{/* Plant rows */}
-							<div className="mt-4 space-y-3">
+							{/* Stats row */}
+							<div className="mt-4 grid grid-cols-3 gap-2">
 								{[
-									{
-										name: "Monstera",
-										sub: "Living room",
-										color: "bg-[#2f6f4e]",
-										status: "Thriving",
-										statusColor: "text-[#2f6f4e] bg-[#2f6f4e]/10",
-									},
-									{
-										name: "Snake Plant",
-										sub: "Bedroom",
-										color: "bg-[#5c8f57]",
-										status: "Needs water",
-										statusColor: "text-[#b99561] bg-[#b99561]/10",
-									},
-									{
-										name: "Pothos",
-										sub: "Kitchen",
-										color: "bg-[#7aa766]",
-										status: "Thriving",
-										statusColor: "text-[#2f6f4e] bg-[#2f6f4e]/10",
-									},
-								].map((plant) => (
+									{ num: "3", label: "Plants", accent: "bg-[#2f6f4e]" },
+									{ num: "1", label: "Water", accent: "bg-[#b99561]" },
+									{ num: "2", label: "Thriving", accent: "bg-[#5c8f57]" },
+								].map((s) => (
 									<div
-										key={plant.name}
-										className="flex items-center gap-3 rounded-xl bg-[#fbfaf6]/80 p-2.5 dark:bg-white/5"
+										key={s.label}
+										className="rounded-xl border border-[#e5ddd0]/60 bg-[#fbfaf6]/60 p-2.5 dark:border-white/10 dark:bg-white/5"
 									>
-										<div
-											className={`h-8 w-8 shrink-0 rounded-lg ${plant.color}`}
-										/>
-										<div className="min-w-0 flex-1">
-											<p className="truncate text-xs font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
-												{plant.name}
-											</p>
-											<p className="text-[10px] text-[#5d6a57] dark:text-[#bfccb8]">
-												{plant.sub}
-											</p>
-										</div>
-										<span
-											className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${plant.statusColor}`}
-										>
-											{plant.status}
-										</span>
+										<div className={`mb-1.5 h-1 w-4 rounded-full ${s.accent}`} />
+										<p className="text-lg font-bold leading-none text-[#1f2d22] dark:text-[#f5f7f0]">
+											{s.num}
+										</p>
+										<p className="mt-1 text-[9px] text-[#5d6a57] dark:text-[#bfccb8]">
+											{s.label}
+										</p>
 									</div>
 								))}
 							</div>
 
-							{/* Mini calendar strip */}
-							<div className="mt-4 rounded-xl border border-[#e5ddd0] bg-[#fbfaf6]/60 p-3 dark:border-white/10 dark:bg-white/5">
-								<p className="text-[10px] font-medium text-[#5d6a57] dark:text-[#bfccb8]">
-									This week
-								</p>
-								<div className="mt-2 flex justify-between">
-									{["M", "T", "W", "T", "F", "S", "S"].map((day, i) => (
-										<div key={day + i} className="flex flex-col items-center gap-1">
-											<span className="text-[9px] text-[#9aa594]">{day}</span>
+							{/* Search bar mockup */}
+							<div className="mt-4 flex items-center gap-2 rounded-xl border border-[#e5ddd0]/60 bg-[#fbfaf6]/40 px-3 py-2 dark:border-white/10 dark:bg-white/5">
+								<div className="h-3.5 w-3.5 rounded-full border-2 border-[#9aa594]" />
+								<span className="text-[10px] text-[#9aa594]">Search plants...</span>
+							</div>
+
+							{/* Plant cards */}
+							<div className="mt-4 grid grid-cols-2 gap-3">
+								{[
+									{
+										name: "Monstera",
+										species: "Deliciosa",
+										location: "Living Room",
+										status: "Thriving",
+										statusColor: "bg-[#e8f5e9] text-[#2f6f4e] dark:bg-[#2f6f4e]/20",
+										watered: "May 10",
+										next: "5 days",
+										progress: 70,
+									},
+									{
+										name: "Snake Plant",
+										species: "Sansevieria",
+										location: "Bedroom",
+										status: "Needs attention",
+										statusColor: "bg-[#fef3c7] text-[#92400e] dark:bg-[#b99561]/20 dark:text-[#f2d39c]",
+										watered: "May 9",
+										next: "18 days",
+										progress: 30,
+									},
+								].map((plant) => (
+									<div
+										key={plant.name}
+										className="rounded-xl border border-[#e5ddd0]/40 bg-[#fbfaf6]/40 p-3 dark:border-white/10 dark:bg-white/5"
+									>
+										<div className="flex items-start gap-2">
+											<div className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#2f6f4e]/10 text-[#2f6f4e] dark:bg-[#2f6f4e]/20 dark:text-[#9bd5a5]">
+												<Leaf className="size-4" />
+											</div>
+											<div className="min-w-0 flex-1">
+												<p className="truncate text-[10px] font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
+													{plant.name}
+												</p>
+												<p className="text-[9px] text-[#5d6a57] dark:text-[#bfccb8]">
+													{plant.species}
+												</p>
+											</div>
+										</div>
+										<div className="mt-2 flex flex-wrap items-center gap-1">
+											<span
+												className={`rounded-full px-1.5 py-0.5 text-[7px] font-medium ${plant.statusColor}`}
+											>
+												{plant.status}
+											</span>
+											<span className="rounded-full border border-[#e5ddd0] bg-white/60 px-1.5 py-0.5 text-[7px] text-[#5d6a57] dark:border-white/10 dark:bg-white/10 dark:text-[#bfccb8]">
+												{plant.location}
+											</span>
+										</div>
+										<div className="mt-2 flex items-center justify-between text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">
+											<span>Watered {plant.watered}</span>
+											<span className="font-medium text-[#2f6f4e] dark:text-[#9bd5a5]">{plant.next}</span>
+										</div>
+										<div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#e5ddd0]/60 dark:bg-white/10">
 											<div
-												className={`h-1.5 w-1.5 rounded-full ${
-													i === 2 || i === 4
-														? "bg-[#2f6f4e]"
-														: i === 5
-															? "bg-[#b99561]"
-															: "bg-[#d8cab5]/50"
-												}`}
+												className="h-full rounded-full bg-[#2f6f4e]"
+												style={{ width: `${plant.progress}%` }}
 											/>
 										</div>
-									))}
-								</div>
+									</div>
+								))}
 							</div>
-						</motion.div>
+						</div>
 					</motion.div>
 				</div>
 			</section>
