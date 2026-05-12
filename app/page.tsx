@@ -3,13 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
+	AlertCircle,
 	ArrowRight,
 	CalendarDays,
 	Droplets,
 	HeartPulse,
 	Leaf,
+	LayoutDashboard,
 	LogIn,
+	LogOut,
+	MapPin,
+	MoreHorizontal,
 	NotebookPen,
+	Plus,
+	Search,
+	Settings,
 	Sprout,
 	Star,
 } from "lucide-react";
@@ -262,8 +270,8 @@ export default function Home() {
 						</motion.div>
 
 						<div className="absolute inset-x-0 top-8 overflow-hidden rounded-2xl border border-[#e1d7c5] bg-[#fbfaf6] shadow-2xl dark:border-white/10 dark:bg-[#101912]">
-							<div className="grid h-[23rem] grid-cols-[7rem_1fr]">
-								<aside className="border-r border-[#e1d7c5] bg-[#f7f2e8] dark:border-white/10 dark:bg-[#17241c]">
+							<div className="grid h-[23rem] grid-cols-[8.5rem_1fr]">
+								<aside className="flex min-w-0 flex-col border-r border-[#e1d7c5] bg-[#f7f2e8] dark:border-white/10 dark:bg-[#17241c]">
 									<div className="flex h-14 items-center gap-2 border-b border-[#d9cdb8] px-3 dark:border-white/10">
 										<span className="grid size-8 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
 											<Sprout className="size-4" />
@@ -277,16 +285,26 @@ export default function Home() {
 											</p>
 										</div>
 									</div>
-									<nav className="space-y-1 p-2">
+									<nav className="flex-1 space-y-1 p-2">
 										<div className="flex h-8 items-center gap-2 rounded-lg bg-[#2f6f4e] px-2 text-[10px] font-medium text-white shadow-sm">
-											<CalendarDays className="size-3" />
+											<LayoutDashboard className="size-3" />
 											Dashboard
 										</div>
 										<div className="flex h-8 items-center gap-2 rounded-lg px-2 text-[10px] font-medium text-[#4c5b48] dark:text-[#c4d0bd]">
 											<CalendarDays className="size-3" />
 											Calendar
 										</div>
+										<div className="flex h-8 items-center gap-2 rounded-lg px-2 text-[10px] font-medium text-[#4c5b48] dark:text-[#c4d0bd]">
+											<Settings className="size-3" />
+											Settings
+										</div>
 									</nav>
+									<div className="border-t border-[#d9cdb8] p-2 dark:border-white/10">
+										<div className="flex h-8 items-center gap-2 rounded-lg px-2 text-[10px] font-medium text-[#6b4538] dark:text-[#f1c7ba]">
+											<LogOut className="size-3" />
+											Log out
+										</div>
+									</div>
 								</aside>
 
 								<div className="min-w-0">
@@ -299,35 +317,45 @@ export default function Home() {
 												Dashboard
 											</p>
 										</div>
-										<div className="flex items-center">
+										<div className="flex items-center gap-2">
 											<span className="grid size-7 place-items-center rounded-full bg-[#2f6f4e] text-[10px] font-semibold text-white">
 												PT
 											</span>
 										</div>
 									</header>
 
-									<div className="space-y-3 p-4">
-										<div>
-											<span className="rounded-full bg-[#e8f2df] px-2.5 py-1 text-[9px] font-medium text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
-												Live collection
+									<div className="space-y-2.5 p-3">
+										<div className="flex items-end justify-between gap-3">
+											<div>
+												<span className="rounded-full bg-[#e8f2df] px-2.5 py-1 text-[9px] font-medium text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
+													Live collection
+												</span>
+												<h3
+													className="mt-2 text-xl font-semibold tracking-normal text-[#253326] dark:text-[#f3f6ef]"
+													style={{ fontFamily: "var(--font-playfair)" }}
+												>
+													Your plant room
+												</h3>
+												<p className="mt-0.5 hidden text-[8px] text-[#64705f] xl:block dark:text-[#bbc8b6]">
+													Track care cadence, watering dates, and health across
+													your full collection.
+												</p>
+											</div>
+											<span className="inline-flex h-7 items-center gap-1.5 rounded-lg bg-[#2f6f4e] px-2.5 text-[9px] font-medium text-white shadow-sm">
+												<Plus className="size-3" />
+												Add Plant
 											</span>
-											<h3
-												className="mt-3 text-2xl font-semibold tracking-normal text-[#253326] dark:text-[#f3f6ef]"
-												style={{ fontFamily: "var(--font-playfair)" }}
-											>
-												Your plant room
-											</h3>
 										</div>
 
-										<div className="flex items-center gap-3 rounded-xl border border-[#e6ddcf] bg-white/90 p-3 dark:border-white/10 dark:bg-[#17241c]">
-											<span className="grid size-9 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
-												<Droplets className="size-4" />
+										<div className="flex items-center gap-2.5 rounded-xl border border-[#e6ddcf] bg-white/90 p-2.5 dark:border-white/10 dark:bg-[#17241c]">
+											<span className="grid size-8 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
+												<Droplets className="size-3.5" />
 											</span>
 											<div>
-												<p className="text-[11px] font-medium text-[#253326] dark:text-[#f3f6ef]">
+												<p className="text-[10px] font-medium text-[#253326] dark:text-[#f3f6ef]">
 													No plants need watering today
 												</p>
-												<p className="text-[9px] text-[#64705f] dark:text-[#bbc8b6]">
+												<p className="text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
 													Based on each plant&apos;s last watering and care
 													cadence.
 												</p>
@@ -342,12 +370,12 @@ export default function Home() {
 													label: "Total Plants",
 													tone: "bg-[#e8f2df] text-[#2f6f4e]",
 												},
-												{
-													icon: Droplets,
-													value: "0",
-													label: "Water Today",
-													tone: "bg-[#f4ead4] text-[#986515]",
-												},
+														{
+															icon: Droplets,
+															value: "0",
+															label: "Water Today",
+															tone: "bg-[#f4ead4] text-[#986515]",
+														},
 												{
 													icon: Leaf,
 													value: "2",
@@ -355,7 +383,7 @@ export default function Home() {
 													tone: "bg-emerald-100 text-emerald-800",
 												},
 												{
-													icon: HeartPulse,
+													icon: AlertCircle,
 													value: "0",
 													label: "Critical",
 													tone: "bg-red-100 text-red-800",
@@ -363,79 +391,133 @@ export default function Home() {
 											].map((stat) => {
 												const Icon = stat.icon;
 												return (
-													<div
-														key={stat.label}
-														className="flex items-center gap-2 rounded-xl border border-[#e6ddcf] bg-white/90 p-2 dark:border-white/10 dark:bg-[#17241c]"
-													>
-														<span
-															className={`grid size-8 place-items-center rounded-lg ${stat.tone}`}
+														<div
+															key={stat.label}
+															className="flex min-h-[3.5rem] items-center gap-1.5 rounded-xl border border-[#e6ddcf] bg-white/90 p-1.5 dark:border-white/10 dark:bg-[#17241c]"
 														>
-															<Icon className="size-4" />
-														</span>
-														<div>
-															<p className="text-lg font-semibold leading-none text-[#253326] dark:text-[#f3f6ef]">
-																{stat.value}
-															</p>
-															<p className="mt-1 text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
-																{stat.label}
-															</p>
-														</div>
+															<span
+																className={`grid size-7 shrink-0 place-items-center rounded-lg ${stat.tone}`}
+															>
+																<Icon className="size-3.5" />
+															</span>
+															<div className="min-w-0">
+																<p className="text-base font-semibold leading-none text-[#253326] dark:text-[#f3f6ef]">
+																	{stat.value}
+																</p>
+																<p className="mt-0.5 text-[7px] leading-tight text-[#64705f] dark:text-[#bbc8b6]">
+																	{stat.label}
+																</p>
+															</div>
 													</div>
 												);
 											})}
 										</div>
 
-										<div className="rounded-xl border border-[#e6ddcf] bg-white/90 p-3 dark:border-white/10 dark:bg-[#17241c]">
-											<div className="mb-3 flex items-center justify-between gap-3">
-												<div className="h-8 w-40 rounded-lg border border-[#e6ddcf] bg-[#fbfaf6] dark:border-white/10 dark:bg-white/5" />
+										<div className="rounded-xl border border-[#e6ddcf] bg-white/90 p-2.5 dark:border-white/10 dark:bg-[#17241c]">
+											<div className="mb-2 flex items-center justify-between gap-2">
+												<div className="relative h-7 w-44 rounded-lg border border-[#e6ddcf] bg-[#fbfaf6] dark:border-white/10 dark:bg-white/5">
+													<Search className="absolute left-3 top-1/2 size-3 -translate-y-1/2 text-[#8a9484]" />
+													<span className="absolute left-8 top-1/2 -translate-y-1/2 truncate text-[8px] text-[#7b8676]">
+														Search by name or species
+													</span>
+												</div>
 												<div className="flex gap-2">
-													<span className="rounded-lg border border-[#2f6f4e] bg-[#e8f2df] px-3 py-1 text-[9px] text-[#2f6f4e]">
+													<span className="inline-flex h-7 items-center rounded-lg border border-[#2f6f4e] bg-[#e8f2df] px-3 text-[8px] text-[#2f6f4e]">
 														All
 													</span>
-													<span className="rounded-lg border border-[#d8cab5] px-3 py-1 text-[9px] text-[#57634f]">
+													<span className="inline-flex h-7 items-center rounded-lg border border-[#d8cab5] px-3 text-[8px] text-[#57634f]">
 														Thriving
+													</span>
+													<span className="hidden h-7 items-center rounded-lg border border-[#d8cab5] px-3 text-[8px] text-[#57634f] xl:inline-flex">
+														Locations
 													</span>
 												</div>
 											</div>
-											<div className="grid grid-cols-2 gap-3">
+											<p className="mb-2 text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
+												Showing 3 of 3 plants
+											</p>
+											<div className="grid grid-cols-3 gap-2">
 												{[
 													{
 														name: "Monstera Deliciosa",
 														species: "Monstera",
 														location: "Living Room",
-														progress: "62%",
+														next: "5 days left",
+														progress: "29%",
+														status: "Thriving",
+														tone: "bg-emerald-100 text-emerald-800",
+													},
+													{
+														name: "Fiddle Leaf Fig",
+														species: "Ficus lyrata",
+														location: "",
+														next: "7 days left",
+														progress: "30%",
+														status: "Thriving",
+														tone: "bg-emerald-100 text-emerald-800",
 													},
 													{
 														name: "Snake Plant",
-														species: "Sansevieria",
+														species: "Sansevieria trifasciata",
 														location: "Hallway",
-														progress: "24%",
+														next: "18 days left",
+														progress: "14%",
+														status: "Needs attention",
+														tone: "bg-amber-100 text-amber-900",
 													},
 												].map((plant) => (
 													<div
 														key={plant.name}
-														className="rounded-xl border border-[#e6ddcf] bg-white p-3 dark:border-white/10 dark:bg-[#101912]"
+														className="rounded-xl border border-[#e6ddcf] bg-white p-2 dark:border-white/10 dark:bg-[#101912]"
 													>
-														<div className="flex items-start justify-between gap-3">
-															<div>
-																<p className="text-[12px] font-semibold text-[#253326] dark:text-[#f3f6ef]">
-																	{plant.name}
-																</p>
-																<p className="text-[9px] text-[#64705f] dark:text-[#bbc8b6]">
-																	{plant.species}
-																</p>
+														<div className="flex items-start justify-between gap-2">
+															<div className="flex min-w-0 items-start gap-1.5">
+																<span className="grid size-7 shrink-0 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e]">
+																	<Leaf className="size-3.5" />
+																</span>
+																<div className="min-w-0">
+																	<p className="truncate text-[10px] font-semibold text-[#253326] dark:text-[#f3f6ef]">
+																		{plant.name}
+																	</p>
+																	<p className="truncate text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
+																		{plant.species}
+																	</p>
+																</div>
 															</div>
-															<Leaf className="size-4 text-[#2f6f4e]" />
+															<MoreHorizontal className="size-3.5 shrink-0 text-[#253326] dark:text-[#f3f6ef]" />
 														</div>
-														<div className="mt-3 flex gap-1">
-															<span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[8px] text-emerald-800">
-																Thriving
+														<div className="mt-2 flex gap-1">
+															<span
+																className={`rounded-full px-1.5 py-0.5 text-[7px] ${plant.tone}`}
+															>
+																{plant.status}
 															</span>
-															<span className="rounded-full border border-[#d8cab5] px-2 py-0.5 text-[8px] text-[#64705f]">
-																{plant.location}
-															</span>
+															{plant.location && (
+																<span className="inline-flex items-center gap-0.5 rounded-full border border-[#d8cab5] px-1.5 py-0.5 text-[7px] text-[#64705f]">
+																	<MapPin className="size-2.5" />
+																	{plant.location}
+																</span>
+															)}
 														</div>
-														<div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#eee6da]">
+														<div className="mt-2 space-y-1 text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
+															<div className="flex items-center justify-between gap-2">
+																<span>Last watered</span>
+																<span className="font-medium text-[#253326] dark:text-[#f3f6ef]">
+																	May 10, 2026
+																</span>
+															</div>
+															<div className="flex items-center justify-between gap-2">
+																<span>Next watering</span>
+																<span className="font-medium text-[#253326] dark:text-[#f3f6ef]">
+																	{plant.next}
+																</span>
+															</div>
+														</div>
+														<div className="mt-2 flex items-center justify-between text-[7px] text-[#64705f]">
+															<span>Watering progress</span>
+															<span>{plant.progress}</span>
+														</div>
+														<div className="mt-1 h-1 overflow-hidden rounded-full bg-[#eee6da]">
 															<div
 																className="h-full rounded-full bg-[#2f6f4e]"
 																style={{ width: plant.progress }}
