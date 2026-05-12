@@ -201,23 +201,159 @@ export default function Home() {
 							</motion.div>
 						</motion.div>
 
-					{/* Plant Illustration */}
+					{/* Hero Illustration — Dashboard mockup + botanical leaves */}
 					<motion.div
 						className="relative min-h-[28rem]"
 						initial={{ opacity: 0, scale: 0.92 }}
 						animate={{ opacity: 1, scale: 1 }}
-						transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }}
+						transition={{ duration: 0.9, ease: "easeOut" as const, delay: 0.2 }}
 					>
-						<div className="absolute inset-x-6 bottom-0 h-40 rounded-[50%] bg-[#314833]/20 blur-2xl dark:bg-black/40" />
+						{/* Soft ground shadow */}
+						<div className="absolute inset-x-6 bottom-0 h-40 rounded-[50%] bg-[#314833]/15 blur-2xl dark:bg-black/30" />
+
+						{/* Large botanical leaf — behind card */}
+						<motion.svg
+							className="absolute -right-4 -top-4 h-72 w-72 text-[#7aa766]/30 dark:text-[#7aa766]/20"
+							viewBox="0 0 200 200"
+							fill="none"
+							animate={{
+								y: [0, -12, 0],
+								rotate: [0, 4, 0],
+							}}
+							transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+						>
+							<path
+								d="M100 180C60 140 40 100 50 60c8-28 28-48 58-48 10 28 8 54-5 78-12 20-18 48-3 90Z"
+								fill="currentColor"
+							/>
+							<path
+								d="M100 160c0-40 8-80 30-120"
+								stroke="currentColor"
+								strokeWidth="3"
+								strokeLinecap="round"
+							/>
+							<path
+								d="M100 110c-20-12-36-28-48-50M100 90c20-12 36-28 48-50"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+							/>
+						</motion.svg>
+
+						{/* Smaller leaf — bottom left */}
+						<motion.svg
+							className="absolute -left-8 bottom-8 h-48 w-48 text-[#5c8f57]/25 dark:text-[#5c8f57]/15"
+							viewBox="0 0 200 200"
+							fill="none"
+							animate={{
+								y: [0, 10, 0],
+								rotate: [0, -6, 0],
+							}}
+							transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+						>
+							<path
+								d="M100 170C70 140 55 110 62 80c6-22 24-38 48-38 8 22 6 44-4 64-10 16-14 38-6 64Z"
+								fill="currentColor"
+							/>
+							<path
+								d="M100 150c4-32 12-64 32-96"
+								stroke="currentColor"
+								strokeWidth="2.5"
+								strokeLinecap="round"
+							/>
+						</motion.svg>
+
+						{/* Dashboard preview card */}
 						<motion.div
-							className="absolute left-1/2 top-8 h-80 w-52 -translate-x-1/2 rounded-b-[3rem] rounded-t-lg border border-[#9d784b]/30 bg-gradient-to-b from-[#d59b63] to-[#8a5f3b] shadow-2xl"
+							className="absolute left-1/2 top-6 w-64 -translate-x-1/2 rounded-3xl border border-[#e5ddd0] bg-white/90 p-5 shadow-2xl backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/90"
 							animate={floatingAnimation}
 						>
-							<div className="absolute left-8 top-10 h-56 w-36 rounded-full bg-[#2f6f4e] shadow-lg" />
-							<div className="absolute right-8 top-1 h-64 w-36 rotate-12 rounded-full bg-[#5c8f57] shadow-lg" />
-							<div className="absolute left-0 top-0 h-64 w-36 -rotate-12 rounded-full bg-[#7aa766] shadow-lg" />
-							<div className="absolute left-1/2 top-20 h-56 w-4 -translate-x-1/2 rounded-full bg-[#315f3d]" />
-							<div className="absolute bottom-0 h-24 w-full rounded-b-[3rem] bg-gradient-to-b from-[#b9824f] to-[#6f472f]" />
+							{/* Card header */}
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-2">
+									<span className="grid size-7 place-items-center rounded-lg bg-[#2f6f4e] text-white">
+										<Sprout className="size-3.5" />
+									</span>
+									<span className="text-xs font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
+										My Plants
+									</span>
+								</div>
+								<span className="text-[10px] font-medium text-[#5d6a57] dark:text-[#bfccb8]">
+									12 total
+								</span>
+							</div>
+
+							{/* Plant rows */}
+							<div className="mt-4 space-y-3">
+								{[
+									{
+										name: "Monstera",
+										sub: "Living room",
+										color: "bg-[#2f6f4e]",
+										status: "Thriving",
+										statusColor: "text-[#2f6f4e] bg-[#2f6f4e]/10",
+									},
+									{
+										name: "Snake Plant",
+										sub: "Bedroom",
+										color: "bg-[#5c8f57]",
+										status: "Needs water",
+										statusColor: "text-[#b99561] bg-[#b99561]/10",
+									},
+									{
+										name: "Pothos",
+										sub: "Kitchen",
+										color: "bg-[#7aa766]",
+										status: "Thriving",
+										statusColor: "text-[#2f6f4e] bg-[#2f6f4e]/10",
+									},
+								].map((plant) => (
+									<div
+										key={plant.name}
+										className="flex items-center gap-3 rounded-xl bg-[#fbfaf6]/80 p-2.5 dark:bg-white/5"
+									>
+										<div
+											className={`h-8 w-8 shrink-0 rounded-lg ${plant.color}`}
+										/>
+										<div className="min-w-0 flex-1">
+											<p className="truncate text-xs font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
+												{plant.name}
+											</p>
+											<p className="text-[10px] text-[#5d6a57] dark:text-[#bfccb8]">
+												{plant.sub}
+											</p>
+										</div>
+										<span
+											className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-medium ${plant.statusColor}`}
+										>
+											{plant.status}
+										</span>
+									</div>
+								))}
+							</div>
+
+							{/* Mini calendar strip */}
+							<div className="mt-4 rounded-xl border border-[#e5ddd0] bg-[#fbfaf6]/60 p-3 dark:border-white/10 dark:bg-white/5">
+								<p className="text-[10px] font-medium text-[#5d6a57] dark:text-[#bfccb8]">
+									This week
+								</p>
+								<div className="mt-2 flex justify-between">
+									{["M", "T", "W", "T", "F", "S", "S"].map((day, i) => (
+										<div key={day + i} className="flex flex-col items-center gap-1">
+											<span className="text-[9px] text-[#9aa594]">{day}</span>
+											<div
+												className={`h-1.5 w-1.5 rounded-full ${
+													i === 2 || i === 4
+														? "bg-[#2f6f4e]"
+														: i === 5
+															? "bg-[#b99561]"
+															: "bg-[#d8cab5]/50"
+												}`}
+											/>
+										</div>
+									))}
+								</div>
+							</div>
 						</motion.div>
 					</motion.div>
 				</div>
