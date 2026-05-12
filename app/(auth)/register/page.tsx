@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function RegisterPage() {
 	return (
-		<main className="grid min-h-screen bg-[#fbfaf6] text-[#253326] lg:grid-cols-[1.35fr_0.65fr] dark:bg-[#101912] dark:text-[#f5f7f0]">
+		<main className="grid min-h-dvh bg-[#fbfaf6] text-[#253326] lg:h-dvh lg:overflow-hidden lg:grid-cols-[1.35fr_0.65fr] dark:bg-[#101912] dark:text-[#f5f7f0]">
 			{/* Left Panel */}
 			<section className="relative hidden overflow-visible bg-gradient-to-br from-[#1d422f] via-[#4f7f4c] to-[#c9a86a] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
 				<AuthPlantBackdrop />
@@ -41,7 +41,7 @@ export default function RegisterPage() {
 			</section>
 
 			{/* Right Panel */}
-			<section className="relative z-10 flex items-center justify-center p-5 sm:p-8">
+			<section className="relative z-10 flex min-h-dvh items-center justify-center overflow-y-auto p-5 sm:p-8 lg:min-h-0">
 				<motion.div
 					className="w-full max-w-md"
 					initial={{ opacity: 0, x: 60 }}
