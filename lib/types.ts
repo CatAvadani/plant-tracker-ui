@@ -4,6 +4,16 @@ export enum HealthStatus {
 	Critical = 2,
 }
 
+export enum CareLogEntryType {
+	Watered = 0,
+	Fertilized = 1,
+	Repotted = 2,
+	Pruned = 3,
+	TreatedForPests = 4,
+	HealthCheck = 5,
+	Other = 6,
+}
+
 export interface Plant {
 	id: number;
 	name: string;
@@ -15,6 +25,19 @@ export interface Plant {
 	notes?: string;
 	imageUrl?: string | null;
 	createdAt: string;
+}
+
+export interface CareLog {
+	id: number;
+	plantId: number;
+	entryType: CareLogEntryType;
+	notes?: string | null;
+	createdAt: string;
+}
+
+export interface CareLogCreateData {
+	entryType: CareLogEntryType;
+	notes?: string;
 }
 
 export interface User {
