@@ -10,7 +10,7 @@ export default function LoginPage() {
 	return (
 		<main className="grid min-h-screen bg-[#fbfaf6] text-[#253326] lg:grid-cols-[1.35fr_0.65fr] dark:bg-[#101912] dark:text-[#f5f7f0]">
 			{/* Left Panel */}
-			<section className="relative hidden overflow-hidden bg-gradient-to-br from-[#1a3d2a] via-[#2f6f4e] to-[#8a9e5c] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
+			<section className="relative hidden overflow-visible bg-gradient-to-br from-[#1a3d2a] via-[#2f6f4e] to-[#8a9e5c] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
 				<AuthPlantBackdrop />
 
 				<Link href="/" className="relative flex items-center gap-3">
@@ -19,7 +19,7 @@ export default function LoginPage() {
 					</span>
 					<span className="text-sm font-semibold">Plant Tracker</span>
 				</Link>
-				<div className="relative max-w-3xl">
+				<div className="relative mb-16 max-w-3xl xl:mb-20">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ export default function LoginPage() {
 					>
 						<Leaf className="mb-6 size-12 text-[#d9f1ce]" />
 						<h1
-							className="text-5xl font-semibold leading-tight lg:text-7xl"
+							className="max-w-3xl text-6xl font-semibold leading-[1.02] tracking-normal sm:text-7xl lg:text-[5.5rem]"
 							style={{ fontFamily: "var(--font-playfair)" }}
 						>
 							Come back to a calmer collection.
@@ -41,7 +41,7 @@ export default function LoginPage() {
 			</section>
 
 			{/* Right Panel */}
-			<section className="flex items-center justify-center p-5 sm:p-8">
+			<section className="relative z-10 flex items-center justify-center p-5 sm:p-8">
 				<motion.div
 					className="w-full max-w-md"
 					initial={{ opacity: 0, x: 60 }}

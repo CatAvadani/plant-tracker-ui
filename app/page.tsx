@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
 	ArrowRight,
@@ -13,21 +14,20 @@ import {
 	Star,
 } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 const fadeUp = {
-	hidden: { opacity: 0, y: 40 },
+	hidden: { opacity: 0, y: 24 },
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: { duration: 0.7, ease: "easeOut" as const },
+		transition: { duration: 0.55, ease: "easeOut" as const },
 	},
 };
 
 const stagger = {
 	hidden: {},
 	visible: {
-		transition: { staggerChildren: 0.12 },
+		transition: { staggerChildren: 0.09 },
 	},
 };
 
@@ -36,9 +36,14 @@ const scaleUp = {
 	visible: {
 		opacity: 1,
 		scale: 1,
-		transition: { duration: 0.6, ease: "easeOut" as const },
+		transition: { duration: 0.45, ease: "easeOut" as const },
 	},
 };
+
+const viewportOnce = {
+	once: true,
+	amount: 0.28,
+} as const;
 
 export default function Home() {
 	return (
@@ -106,7 +111,7 @@ export default function Home() {
 
 				<div className="mx-auto grid min-h-[calc(100vh-5.5rem)] max-w-6xl items-center gap-10 py-16 lg:grid-cols-[1fr_1fr]">
 					<motion.div
-						className="max-w-2xl"
+						className="max-w-2xl transform-gpu will-change-transform"
 						initial="hidden"
 						animate="visible"
 						variants={stagger}
@@ -165,16 +170,19 @@ export default function Home() {
 							className="mt-10 flex items-center gap-4"
 						>
 							<div className="flex -space-x-2.5">
-								{["bg-[#7aa766]", "bg-[#5c8f57]", "bg-[#4a7a45]", "bg-[#b99561]"].map(
-									(color, i) => (
-										<div
-											key={i}
-											className={`inline-flex size-9 items-center justify-center rounded-full border-2 border-[#fbfaf6] text-xs font-medium text-white ${color}`}
-										>
-											{["JD", "MK", "AL", "SR"][i]}
-										</div>
-									)
-								)}
+								{[
+									"bg-[#7aa766]",
+									"bg-[#5c8f57]",
+									"bg-[#4a7a45]",
+									"bg-[#b99561]",
+								].map((color, i) => (
+									<div
+										key={i}
+										className={`inline-flex size-9 items-center justify-center rounded-full border-2 border-[#fbfaf6] text-xs font-medium text-white ${color}`}
+									>
+										{["JD", "MK", "AL", "SR"][i]}
+									</div>
+								))}
 							</div>
 							<div>
 								<div className="flex items-center gap-1">
@@ -183,238 +191,262 @@ export default function Home() {
 											key={i}
 											className="size-3.5 fill-[#b99561] text-[#b99561]"
 										/>
-										))}
-									</div>
-									<p className="mt-0.5 text-xs text-[#5d6a57] dark:text-[#bfccb8]">
-										Loved by 2,000+ plant parents
-									</p>
+									))}
 								</div>
+								<p className="mt-0.5 text-xs text-[#5d6a57] dark:text-[#bfccb8]">
+									Loved by 2,000+ plant parents
+								</p>
+							</div>
 						</motion.div>
 					</motion.div>
 
-					{/* Hero Illustration — Two overlapping cards + botanical leaves */}
+					{/* Hero Illustration — dashboard shell preview */}
 					<motion.div
-						className="relative mx-auto h-[26rem] w-full max-w-lg"
+						className="relative h-[27rem] w-full transform-gpu will-change-transform"
 						initial={{ opacity: 0, scale: 0.92 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ duration: 0.9, ease: "easeOut" as const, delay: 0.2 }}
 					>
-						{/* Soft ground shadow */}
-						<div className="absolute inset-x-4 bottom-4 h-32 rounded-[50%] bg-[#314833]/15 blur-2xl dark:bg-black/30" />
-
-						{/* Large botanical leaf — behind cards */}
-						<motion.svg
-							className="absolute right-[-6rem] top-[-5rem] h-[22rem] w-[22rem] text-[#7aa766]/45 dark:text-[#7aa766]/25"
-							viewBox="0 0 200 200"
-							fill="none"
-							animate={{
-								y: [0, -12, 0],
-								rotate: [0, 4, 0],
-							}}
+						<div className="absolute inset-x-8 bottom-2 h-28 rounded-[50%] bg-[#314833]/15 blur-2xl dark:bg-black/30" />
+						<motion.div
+							className="absolute right-[-8rem] top-[-3.5rem] h-[28rem] w-[28rem] transform-gpu text-[#7aa766]/50 will-change-transform dark:text-[#7aa766]/25"
+							animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
 							transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+							aria-hidden="true"
 						>
-							<path
-								d="M100 180C60 140 40 100 50 60c8-28 28-48 58-48 10 28 8 54-5 78-12 20-18 48-3 90Z"
-								fill="currentColor"
-							/>
-							<path
-								d="M100 160c0-40 8-80 30-120"
-								stroke="currentColor"
-								strokeWidth="3"
-								strokeLinecap="round"
-							/>
-							<path
-								d="M100 110c-20-12-36-28-48-50M100 90c20-12 36-28 48-50"
-								stroke="currentColor"
-								strokeWidth="2"
-								strokeLinecap="round"
-							/>
-						</motion.svg>
-
-						{/* Smaller leaf — bottom left */}
-						<motion.svg
-							className="absolute left-[-6rem] bottom-[-4rem] h-80 w-80 text-[#5c8f57]/40 dark:text-[#5c8f57]/20"
-							viewBox="0 0 200 200"
-							fill="none"
-							animate={{
-								y: [0, 10, 0],
-								rotate: [0, -6, 0],
-							}}
-							transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+							<svg
+								className="h-full w-full"
+								viewBox="0 0 200 200"
+								fill="none"
+							>
+								<path
+									d="M100 180C60 140 40 100 50 60c8-28 28-48 58-48 10 28 8 54-5 78-12 20-18 48-3 90Z"
+									fill="currentColor"
+								/>
+								<path
+									d="M100 160c0-40 8-80 30-120"
+									stroke="currentColor"
+									strokeWidth="3"
+									strokeLinecap="round"
+								/>
+								<path
+									d="M100 110c-20-12-36-28-48-50M100 90c20-12 36-28 48-50"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+								/>
+							</svg>
+						</motion.div>
+						<motion.div
+							className="absolute bottom-[-9rem] right-[5rem] h-[22rem] w-[22rem] transform-gpu text-[#5c8f57]/40 will-change-transform dark:text-[#5c8f57]/24"
+							animate={{ y: [0, 8, 0], rotate: [18, 14, 18] }}
+							transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+							aria-hidden="true"
 						>
-							<path
-								d="M100 170C70 140 55 110 62 80c6-22 24-38 48-38 8 22 6 44-4 64-10 16-14 38-6 64Z"
-								fill="currentColor"
-							/>
-							<path
-								d="M100 150c4-32 12-64 32-96"
-								stroke="currentColor"
-								strokeWidth="2.5"
-								strokeLinecap="round"
-							/>
-						</motion.svg>
+							<svg
+								className="h-full w-full"
+								viewBox="0 0 200 200"
+								fill="none"
+							>
+								<path
+									d="M100 170C70 140 55 110 62 80c6-22 24-38 48-38 8 22 6 44-4 64-10 16-14 38-6 64Z"
+									fill="currentColor"
+								/>
+								<path
+									d="M100 150c4-32 12-64 32-96"
+									stroke="currentColor"
+									strokeWidth="2.5"
+									strokeLinecap="round"
+								/>
+							</svg>
+						</motion.div>
 
-						{/* Calendar card — behind dashboard, peeking from upper-right */}
-						<div className="absolute left-1/2 top-4 z-0 w-60 -translate-x-[5%] rotate-[-6deg] rounded-2xl border border-[#e5ddd0] bg-white/80 p-5 shadow-lg backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/80">
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-[9px] font-medium uppercase tracking-wider text-[#9aa594] dark:text-[#bfccb8]">Watering schedule</p>
-									<p className="text-sm font-bold text-[#1f2d22] dark:text-[#f5f7f0]">May 2026</p>
-								</div>
-								<div className="flex gap-1">
-									<div className="h-6 w-6 rounded-lg border border-[#e5ddd0] bg-[#fbfaf6] dark:border-white/10" />
-									<div className="h-6 w-6 rounded-lg border border-[#e5ddd0] bg-[#fbfaf6] dark:border-white/10" />
-								</div>
-							</div>
-							<div className="mt-3 grid grid-cols-7 gap-1 text-center">
-								{["M","T","W","T","F","S","S"].map((d,i) => (
-									<span key={`mini-${i}`} className="text-[9px] font-medium text-[#9aa594] dark:text-[#bfccb8]">{d}</span>
-								))}
-							</div>
-							<div className="mt-1 grid grid-cols-7 gap-1 text-center">
-								{[
-									{ d: "28", o: true }, { d: "29", o: true }, { d: "30", o: true },
-									{ d: "1" }, { d: "2" }, { d: "3" }, { d: "4" },
-									{ d: "5" }, { d: "6" }, { d: "7" }, { d: "8" },
-									{ d: "9" }, { d: "10" }, { d: "11" },
-									{ d: "12", today: true }, { d: "13" }, { d: "14" }, { d: "15" },
-									{ d: "16" }, { d: "17", event: true }, { d: "18" },
-									{ d: "19", event: true }, { d: "20" }, { d: "21" },
-								].map((day, i) => (
-									<div key={`mini-cell-${i}`} className="py-1">
-										<div className={`mx-auto flex h-6 w-6 items-center justify-center rounded-full text-[9px] ${
-											day.today ? "bg-[#2f6f4e] text-white" :
-											day.event ? "bg-[#e8f5e9] text-[#2f6f4e] dark:bg-[#2f6f4e]/20" :
-											day.o ? "text-[#d8cab5]" : "text-[#5d6a57] dark:text-[#bfccb8]"
-										}`}>{day.d}</div>
+						<div className="absolute inset-x-0 top-8 overflow-hidden rounded-2xl border border-[#e1d7c5] bg-[#fbfaf6] shadow-2xl dark:border-white/10 dark:bg-[#101912]">
+							<div className="grid h-[23rem] grid-cols-[7rem_1fr]">
+								<aside className="border-r border-[#e1d7c5] bg-[#f7f2e8] dark:border-white/10 dark:bg-[#17241c]">
+									<div className="flex h-14 items-center gap-2 border-b border-[#d9cdb8] px-3 dark:border-white/10">
+										<span className="grid size-8 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
+											<Sprout className="size-4" />
+										</span>
+										<div>
+											<p className="text-[10px] font-semibold leading-none text-[#253326] dark:text-[#eef4ea]">
+												Plant Tracker
+											</p>
+											<p className="mt-1 text-[8px] text-[#66745f] dark:text-[#a8b7a4]">
+												Collection care
+											</p>
+										</div>
 									</div>
-								))}
-							</div>
-							<div className="mt-3 flex items-center gap-3">
-								<div className="flex items-center gap-1">
-									<div className="h-2 w-2 rounded-full bg-[#2f6f4e]" />
-									<span className="text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">Today</span>
-								</div>
-								<div className="flex items-center gap-1">
-									<div className="h-2 w-2 rounded-full bg-[#e8f5e9] dark:bg-[#2f6f4e]/30" />
-									<span className="text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">Watering</span>
-								</div>
-							</div>
-						</div>
-
-						{/* Dashboard preview card */}
-						<div className="absolute left-1/2 top-10 z-10 w-80 -translate-x-[55%] rounded-3xl border border-[#e5ddd0] bg-white/90 p-5 shadow-2xl backdrop-blur-sm dark:border-white/10 dark:bg-[#1a2e22]/90">
-							{/* Header */}
-							<div className="flex items-center justify-between">
-								<div className="flex items-center gap-2">
-									<span className="grid size-7 place-items-center rounded-lg bg-[#2f6f4e] text-white">
-										<Sprout className="size-3.5" />
-									</span>
-									<div>
-										<p className="text-[10px] font-medium text-[#9aa594] dark:text-[#bfccb8]">
-											PLANT COLLECTION
-										</p>
-										<p className="text-sm font-bold text-[#1f2d22] dark:text-[#f5f7f0]">
+									<nav className="space-y-1 p-2">
+										<div className="flex h-8 items-center gap-2 rounded-lg bg-[#2f6f4e] px-2 text-[10px] font-medium text-white shadow-sm">
+											<CalendarDays className="size-3" />
 											Dashboard
-										</p>
+										</div>
+										<div className="flex h-8 items-center gap-2 rounded-lg px-2 text-[10px] font-medium text-[#4c5b48] dark:text-[#c4d0bd]">
+											<CalendarDays className="size-3" />
+											Calendar
+										</div>
+									</nav>
+								</aside>
+
+								<div className="min-w-0">
+									<header className="flex h-14 items-center justify-between border-b border-[#e5dccd] bg-[#fbfaf6]/90 px-4 dark:border-white/10 dark:bg-[#101912]/88">
+										<div>
+											<p className="text-[9px] font-medium uppercase tracking-[0.16em] text-[#728268] dark:text-[#a9b8a0]">
+												Plant Collection
+											</p>
+											<p className="text-base font-semibold text-[#253326] dark:text-[#f3f6ef]">
+												Dashboard
+											</p>
+										</div>
+										<div className="flex items-center">
+											<span className="grid size-7 place-items-center rounded-full bg-[#2f6f4e] text-[10px] font-semibold text-white">
+												PT
+											</span>
+										</div>
+									</header>
+
+									<div className="space-y-3 p-4">
+										<div>
+											<span className="rounded-full bg-[#e8f2df] px-2.5 py-1 text-[9px] font-medium text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
+												Live collection
+											</span>
+											<h3
+												className="mt-3 text-2xl font-semibold tracking-normal text-[#253326] dark:text-[#f3f6ef]"
+												style={{ fontFamily: "var(--font-playfair)" }}
+											>
+												Your plant room
+											</h3>
+										</div>
+
+										<div className="flex items-center gap-3 rounded-xl border border-[#e6ddcf] bg-white/90 p-3 dark:border-white/10 dark:bg-[#17241c]">
+											<span className="grid size-9 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
+												<Droplets className="size-4" />
+											</span>
+											<div>
+												<p className="text-[11px] font-medium text-[#253326] dark:text-[#f3f6ef]">
+													No plants need watering today
+												</p>
+												<p className="text-[9px] text-[#64705f] dark:text-[#bbc8b6]">
+													Based on each plant&apos;s last watering and care
+													cadence.
+												</p>
+											</div>
+										</div>
+
+										<div className="grid grid-cols-4 gap-2">
+											{[
+												{
+													icon: Sprout,
+													value: "3",
+													label: "Total Plants",
+													tone: "bg-[#e8f2df] text-[#2f6f4e]",
+												},
+												{
+													icon: Droplets,
+													value: "0",
+													label: "Water Today",
+													tone: "bg-[#f4ead4] text-[#986515]",
+												},
+												{
+													icon: Leaf,
+													value: "2",
+													label: "Thriving",
+													tone: "bg-emerald-100 text-emerald-800",
+												},
+												{
+													icon: HeartPulse,
+													value: "0",
+													label: "Critical",
+													tone: "bg-red-100 text-red-800",
+												},
+											].map((stat) => {
+												const Icon = stat.icon;
+												return (
+													<div
+														key={stat.label}
+														className="flex items-center gap-2 rounded-xl border border-[#e6ddcf] bg-white/90 p-2 dark:border-white/10 dark:bg-[#17241c]"
+													>
+														<span
+															className={`grid size-8 place-items-center rounded-lg ${stat.tone}`}
+														>
+															<Icon className="size-4" />
+														</span>
+														<div>
+															<p className="text-lg font-semibold leading-none text-[#253326] dark:text-[#f3f6ef]">
+																{stat.value}
+															</p>
+															<p className="mt-1 text-[8px] text-[#64705f] dark:text-[#bbc8b6]">
+																{stat.label}
+															</p>
+														</div>
+													</div>
+												);
+											})}
+										</div>
+
+										<div className="rounded-xl border border-[#e6ddcf] bg-white/90 p-3 dark:border-white/10 dark:bg-[#17241c]">
+											<div className="mb-3 flex items-center justify-between gap-3">
+												<div className="h-8 w-40 rounded-lg border border-[#e6ddcf] bg-[#fbfaf6] dark:border-white/10 dark:bg-white/5" />
+												<div className="flex gap-2">
+													<span className="rounded-lg border border-[#2f6f4e] bg-[#e8f2df] px-3 py-1 text-[9px] text-[#2f6f4e]">
+														All
+													</span>
+													<span className="rounded-lg border border-[#d8cab5] px-3 py-1 text-[9px] text-[#57634f]">
+														Thriving
+													</span>
+												</div>
+											</div>
+											<div className="grid grid-cols-2 gap-3">
+												{[
+													{
+														name: "Monstera Deliciosa",
+														species: "Monstera",
+														location: "Living Room",
+														progress: "62%",
+													},
+													{
+														name: "Snake Plant",
+														species: "Sansevieria",
+														location: "Hallway",
+														progress: "24%",
+													},
+												].map((plant) => (
+													<div
+														key={plant.name}
+														className="rounded-xl border border-[#e6ddcf] bg-white p-3 dark:border-white/10 dark:bg-[#101912]"
+													>
+														<div className="flex items-start justify-between gap-3">
+															<div>
+																<p className="text-[12px] font-semibold text-[#253326] dark:text-[#f3f6ef]">
+																	{plant.name}
+																</p>
+																<p className="text-[9px] text-[#64705f] dark:text-[#bbc8b6]">
+																	{plant.species}
+																</p>
+															</div>
+															<Leaf className="size-4 text-[#2f6f4e]" />
+														</div>
+														<div className="mt-3 flex gap-1">
+															<span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[8px] text-emerald-800">
+																Thriving
+															</span>
+															<span className="rounded-full border border-[#d8cab5] px-2 py-0.5 text-[8px] text-[#64705f]">
+																{plant.location}
+															</span>
+														</div>
+														<div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#eee6da]">
+															<div
+																className="h-full rounded-full bg-[#2f6f4e]"
+																style={{ width: plant.progress }}
+															/>
+														</div>
+													</div>
+												))}
+											</div>
+										</div>
 									</div>
 								</div>
-								<span className="rounded-full bg-[#e8f5e9] px-2 py-0.5 text-[9px] font-medium text-[#2f6f4e] dark:bg-[#2f6f4e]/20">
-									Live
-								</span>
-							</div>
-
-							{/* Stats row */}
-							<div className="mt-4 grid grid-cols-3 gap-2">
-								{[
-									{ num: "3", label: "Plants", accent: "bg-[#2f6f4e]" },
-									{ num: "1", label: "Water", accent: "bg-[#b99561]" },
-									{ num: "2", label: "Thriving", accent: "bg-[#5c8f57]" },
-								].map((s) => (
-									<div
-										key={s.label}
-										className="rounded-xl border border-[#e5ddd0]/60 bg-[#fbfaf6]/60 p-2.5 dark:border-white/10 dark:bg-white/5"
-									>
-										<div className={`mb-1.5 h-1 w-4 rounded-full ${s.accent}`} />
-										<p className="text-lg font-bold leading-none text-[#1f2d22] dark:text-[#f5f7f0]">
-											{s.num}
-										</p>
-										<p className="mt-1 text-[9px] text-[#5d6a57] dark:text-[#bfccb8]">
-											{s.label}
-										</p>
-									</div>
-								))}
-							</div>
-
-							{/* Search bar mockup */}
-							<div className="mt-4 flex items-center gap-2 rounded-xl border border-[#e5ddd0]/60 bg-[#fbfaf6]/40 px-3 py-2 dark:border-white/10 dark:bg-white/5">
-								<div className="h-3.5 w-3.5 rounded-full border-2 border-[#9aa594]" />
-								<span className="text-[10px] text-[#9aa594]">Search plants...</span>
-							</div>
-
-							{/* Plant cards */}
-							<div className="mt-4 grid grid-cols-2 gap-3">
-								{[
-									{
-										name: "Monstera",
-										species: "Deliciosa",
-										location: "Living Room",
-										status: "Thriving",
-										statusColor: "bg-[#e8f5e9] text-[#2f6f4e] dark:bg-[#2f6f4e]/20",
-										watered: "May 10",
-										next: "5 days",
-										progress: 70,
-									},
-									{
-										name: "Snake Plant",
-										species: "Sansevieria",
-										location: "Bedroom",
-										status: "Needs attention",
-										statusColor: "bg-[#fef3c7] text-[#92400e] dark:bg-[#b99561]/20 dark:text-[#f2d39c]",
-										watered: "May 9",
-										next: "18 days",
-										progress: 30,
-									},
-								].map((plant) => (
-									<div
-										key={plant.name}
-										className="rounded-xl border border-[#e5ddd0]/40 bg-[#fbfaf6]/40 p-3 dark:border-white/10 dark:bg-white/5"
-									>
-										<div className="flex items-start gap-2">
-											<div className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#2f6f4e]/10 text-[#2f6f4e] dark:bg-[#2f6f4e]/20 dark:text-[#9bd5a5]">
-												<Leaf className="size-4" />
-											</div>
-											<div className="min-w-0 flex-1">
-												<p className="truncate text-[10px] font-semibold text-[#1f2d22] dark:text-[#f5f7f0]">
-													{plant.name}
-												</p>
-												<p className="text-[9px] text-[#5d6a57] dark:text-[#bfccb8]">
-													{plant.species}
-												</p>
-											</div>
-										</div>
-										<div className="mt-2 flex flex-wrap items-center gap-1">
-											<span
-												className={`rounded-full px-1.5 py-0.5 text-[7px] font-medium ${plant.statusColor}`}
-											>
-												{plant.status}
-											</span>
-											<span className="rounded-full border border-[#e5ddd0] bg-white/60 px-1.5 py-0.5 text-[7px] text-[#5d6a57] dark:border-white/10 dark:bg-white/10 dark:text-[#bfccb8]">
-												{plant.location}
-											</span>
-										</div>
-										<div className="mt-2 flex items-center justify-between text-[8px] text-[#5d6a57] dark:text-[#bfccb8]">
-											<span>Watered {plant.watered}</span>
-											<span className="font-medium text-[#2f6f4e] dark:text-[#9bd5a5]">{plant.next}</span>
-										</div>
-										<div className="mt-1.5 h-1 overflow-hidden rounded-full bg-[#e5ddd0]/60 dark:bg-white/10">
-											<div
-												className="h-full rounded-full bg-[#2f6f4e]"
-												style={{ width: `${plant.progress}%` }}
-											/>
-										</div>
-									</div>
-								))}
 							</div>
 						</div>
 					</motion.div>
@@ -427,9 +459,9 @@ export default function Home() {
 					<motion.div
 						initial="hidden"
 						whileInView="visible"
-						viewport={{ once: true, margin: "-100px" }}
+						viewport={viewportOnce}
 						variants={stagger}
-						className="mb-12 text-center"
+						className="mb-12 transform-gpu text-center will-change-transform"
 					>
 						<motion.p
 							variants={fadeUp}
@@ -449,9 +481,9 @@ export default function Home() {
 					<motion.div
 						initial="hidden"
 						whileInView="visible"
-						viewport={{ once: true, margin: "-80px" }}
+						viewport={viewportOnce}
 						variants={stagger}
-						className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+						className="grid transform-gpu gap-5 will-change-transform sm:grid-cols-2 lg:grid-cols-3"
 					>
 						{/* Large Card */}
 						<motion.div
@@ -494,8 +526,8 @@ export default function Home() {
 									Health Tracking
 								</h3>
 								<p className="mt-2 text-sm leading-relaxed text-[#5d6a57] dark:text-[#bfccb8]">
-									Monitor thriving, attention, and critical states with
-									visual health indicators.
+									Monitor thriving, attention, and critical states with visual
+									health indicators.
 								</p>
 							</div>
 						</motion.div>
@@ -555,9 +587,9 @@ export default function Home() {
 					<motion.div
 						initial="hidden"
 						whileInView="visible"
-						viewport={{ once: true, margin: "-100px" }}
+						viewport={viewportOnce}
 						variants={stagger}
-						className="mb-16 text-center"
+						className="mb-16 transform-gpu text-center will-change-transform"
 					>
 						<motion.p
 							variants={fadeUp}
@@ -599,10 +631,10 @@ export default function Home() {
 								key={step.num}
 								initial="hidden"
 								whileInView="visible"
-								viewport={{ once: true, margin: "-80px" }}
+								viewport={viewportOnce}
 								variants={fadeUp}
 								transition={{ delay: i * 0.15 }}
-								className="relative text-center"
+								className="relative transform-gpu text-center will-change-transform"
 							>
 								<span
 									className="text-7xl font-bold leading-none text-[#d8cab5]/60 dark:text-[#d8cab5]/20"
@@ -639,9 +671,27 @@ export default function Home() {
 						fill="none"
 						aria-hidden="true"
 					>
-						<circle cx="200" cy="200" r="180" stroke="currentColor" strokeWidth="1" />
-						<circle cx="200" cy="200" r="120" stroke="currentColor" strokeWidth="1" />
-						<circle cx="200" cy="200" r="60" stroke="currentColor" strokeWidth="1" />
+						<circle
+							cx="200"
+							cy="200"
+							r="180"
+							stroke="currentColor"
+							strokeWidth="1"
+						/>
+						<circle
+							cx="200"
+							cy="200"
+							r="120"
+							stroke="currentColor"
+							strokeWidth="1"
+						/>
+						<circle
+							cx="200"
+							cy="200"
+							r="60"
+							stroke="currentColor"
+							strokeWidth="1"
+						/>
 					</svg>
 					<svg
 						className="absolute -left-16 bottom-[-4rem] h-80 w-80 text-white"
@@ -659,9 +709,9 @@ export default function Home() {
 				<motion.div
 					initial="hidden"
 					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
+					viewport={viewportOnce}
 					variants={stagger}
-					className="relative mx-auto max-w-3xl text-center"
+					className="relative mx-auto max-w-3xl transform-gpu text-center will-change-transform"
 				>
 					<motion.h2
 						variants={fadeUp}
@@ -719,9 +769,9 @@ export default function Home() {
 				<motion.div
 					initial="hidden"
 					whileInView="visible"
-					viewport={{ once: true, margin: "-100px" }}
+					viewport={viewportOnce}
 					variants={stagger}
-					className="mx-auto max-w-2xl text-center"
+					className="mx-auto max-w-2xl transform-gpu text-center will-change-transform"
 				>
 					<motion.h2
 						variants={fadeUp}
@@ -759,10 +809,16 @@ export default function Home() {
 						<span className="text-sm font-semibold">Plant Tracker</span>
 					</Link>
 					<div className="flex items-center gap-6 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
-						<Link href="/login" className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]">
+						<Link
+							href="/login"
+							className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+						>
 							Login
 						</Link>
-						<Link href="/register" className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]">
+						<Link
+							href="/register"
+							className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+						>
 							Register
 						</Link>
 					</div>

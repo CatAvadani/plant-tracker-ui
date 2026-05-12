@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 
 export function AuthPlantBackdrop() {
 	return (
-		<div className="absolute inset-0 overflow-hidden">
+		<div className="pointer-events-none absolute inset-0 overflow-visible">
 			<motion.svg
-				className="absolute right-[-17rem] top-[-1rem] h-[48rem] w-[48rem] text-[#d8efc8]/18"
+				className="absolute right-[-23rem] top-[-1rem] h-[50rem] w-[50rem] text-[#8fbb82]/24"
 				viewBox="0 0 200 200"
 				fill="none"
 				animate={{ y: [0, -8, 0], rotate: [12, 14, 12] }}
