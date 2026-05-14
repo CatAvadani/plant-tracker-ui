@@ -981,7 +981,7 @@ export default function Home() {
 							</p>
 							<Link
 								href="#"
-								className="mt-4 inline-flex items-center gap-2.5 rounded-xl bg-[#233226] px-5 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#1f2d22] dark:bg-[#fbfaf6] dark:text-[#233226] dark:hover:bg-[#e8f2df]"
+								className="mt-4 inline-flex items-center gap-2.5 rounded-full bg-[#233226] px-5 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#1f2d22] dark:bg-[#fbfaf6] dark:text-[#233226] dark:hover:bg-[#e8f2df]"
 							>
 								<Smartphone className="size-4" />
 								Android App
