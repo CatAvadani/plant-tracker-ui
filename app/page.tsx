@@ -14,6 +14,7 @@ import {
 	LogIn,
 	LogOut,
 	MapPin,
+	Monitor,
 	MoreHorizontal,
 	NotebookPen,
 	Plus,
@@ -110,10 +111,15 @@ export default function Home() {
 							Leaf Care
 						</span>
 					</Link>
-					<Button asChild variant="ghost" className="rounded-full">
-						<Link href="/login">
-							<LogIn className="size-4" />
-							Log In
+					<Button
+						asChild
+						size="lg"
+						variant="outline"
+						className="h-12 rounded-full border-[#cfc1ad] bg-white/70 px-6 hover:bg-[#f2eadf] dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10"
+					>
+						<Link href="#">
+							<Smartphone className="size-4" />
+							Get the Android app
 						</Link>
 					</Button>
 				</nav>
@@ -201,19 +207,6 @@ export default function Home() {
 							</div>
 						</motion.div>
 
-						<motion.p
-							variants={fadeUp}
-							className="mt-5 inline-flex items-center gap-2 text-sm text-[#5d6a57] dark:text-[#bfccb8]"
-						>
-							<Smartphone className="size-3.5 text-[#2f6f4e] dark:text-[#9bd5a5]" />
-							Also on{" "}
-							<Link
-								href="#"
-								className="text-[#2f6f4e] underline-offset-2 hover:underline dark:text-[#9bd5a5]"
-							>
-								Android
-							</Link>
-						</motion.p>
 					</motion.div>
 
 					{/* Hero Illustration — dashboard shell preview */}
