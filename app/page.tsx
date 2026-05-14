@@ -19,6 +19,7 @@ import {
 	Plus,
 	Search,
 	Settings,
+	Smartphone,
 	Star,
 } from "lucide-react";
 import Link from "next/link";
@@ -206,6 +207,7 @@ export default function Home() {
 								</p>
 							</div>
 						</motion.div>
+
 					</motion.div>
 
 					{/* Hero Illustration — dashboard shell preview */}
@@ -627,10 +629,10 @@ export default function Home() {
 							</div>
 						</motion.div>
 
-						{/* Small Card 3 - spans 2 cols on tablet */}
+						{/* Small Card 3 */}
 						<motion.div
 							variants={scaleUp}
-							className="group relative overflow-hidden rounded-2xl border border-[#e5ddd0] bg-white/70 p-7 sm:col-span-2 lg:col-span-1 dark:border-white/10 dark:bg-white/5"
+							className="group relative overflow-hidden rounded-2xl border border-[#e5ddd0] bg-white/70 p-7 dark:border-white/10 dark:bg-white/5"
 						>
 							<div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#2f6f4e]/10 blur-2xl transition-all group-hover:bg-[#2f6f4e]/15" />
 							<div className="relative">
@@ -646,6 +648,29 @@ export default function Home() {
 								<p className="mt-2 text-sm leading-relaxed text-[#5d6a57] dark:text-[#bfccb8]">
 									Smart reminders based on each plant&apos;s unique watering
 									frequency.
+								</p>
+							</div>
+						</motion.div>
+
+						{/* Small Card 4 — Mobile App */}
+						<motion.div
+							variants={scaleUp}
+							className="group relative overflow-hidden rounded-2xl border border-[#e5ddd0] bg-white/70 p-7 dark:border-white/10 dark:bg-white/5"
+						>
+							<div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-[#7aa766]/10 blur-2xl transition-all group-hover:bg-[#7aa766]/15" />
+							<div className="relative">
+								<div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#7aa766]/15 text-[#2f6f4e]">
+									<Smartphone className="size-5" />
+								</div>
+								<h3
+									className="mt-4 text-lg font-semibold text-[#1f2d22] dark:text-[#f5f7f0]"
+									style={{ fontFamily: "var(--font-playfair)" }}
+								>
+									Mobile App
+								</h3>
+								<p className="mt-2 text-sm leading-relaxed text-[#5d6a57] dark:text-[#bfccb8]">
+									Track your plants on the go. Get reminders and log care
+									activities right from your Android device.
 								</p>
 							</div>
 						</motion.div>
@@ -797,7 +822,7 @@ export default function Home() {
 						className="mx-auto mt-6 max-w-xl text-lg leading-8 text-white/70"
 					>
 						From watering schedules to health journals, Leaf Care brings calm
-						and clarity to your indoor garden.
+						and clarity to your indoor garden — on the web and Android.
 					</motion.p>
 					<motion.div variants={fadeUp} className="mt-10">
 						<Button
@@ -872,31 +897,102 @@ export default function Home() {
 			</section>
 
 			{/* Footer */}
-			<footer className="border-t border-[#e5ddd0] bg-[#fbfaf6] px-6 py-10 dark:border-white/10 dark:bg-[#101912]">
-				<div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
-					<Link href="/" className="flex items-center gap-3">
-						<LeafCareLogo size="sm" />
-						<span className="text-lg font-semibold leading-none">
-							Leaf Care
-						</span>
-					</Link>
-					<div className="flex items-center gap-6 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
-						<Link
-							href="/login"
-							className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
-						>
-							Login
-						</Link>
-						<Link
-							href="/register"
-							className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
-						>
-							Register
-						</Link>
+			<footer className="border-t border-[#e5ddd0] bg-[#f7f2e8] px-6 py-16 dark:border-white/10 dark:bg-[#17241c]">
+				<div className="mx-auto max-w-6xl">
+					<div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+						{/* Brand */}
+						<div className="sm:col-span-2 lg:col-span-1">
+							<Link href="/" className="flex items-center gap-3">
+								<LeafCareLogo size="sm" />
+								<span className="text-lg font-semibold leading-none">
+									Leaf Care
+								</span>
+							</Link>
+							<p className="mt-4 max-w-xs text-sm leading-relaxed text-[#5d6a57] dark:text-[#bfccb8]">
+								Collection care for every windowsill. Track, water, and
+								thrive.
+							</p>
+						</div>
+
+						{/* Product */}
+						<div>
+							<h4 className="text-xs font-semibold uppercase tracking-widest text-[#1f2d22] dark:text-[#f5f7f0]">
+								Product
+							</h4>
+							<ul className="mt-5 space-y-3 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
+								<li>
+									<Link
+										href="/dashboard"
+										className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+									>
+										Dashboard
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/calendar"
+										className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+									>
+										Calendar
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/settings"
+										className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+									>
+										Settings
+									</Link>
+								</li>
+							</ul>
+						</div>
+
+						{/* Account */}
+						<div>
+							<h4 className="text-xs font-semibold uppercase tracking-widest text-[#1f2d22] dark:text-[#f5f7f0]">
+								Account
+							</h4>
+							<ul className="mt-5 space-y-3 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
+								<li>
+									<Link
+										href="/login"
+										className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+									>
+										Log In
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/register"
+										className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+									>
+										Register
+									</Link>
+								</li>
+							</ul>
+						</div>
+
+						{/* Get the app */}
+						<div>
+							<h4 className="text-xs font-semibold uppercase tracking-widest text-[#1f2d22] dark:text-[#f5f7f0]">
+								Get the app
+							</h4>
+							<p className="mt-5 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
+								Take your plants with you. Available on Android.
+							</p>
+							<Link
+								href="#"
+								className="mt-4 inline-flex items-center gap-2.5 rounded-xl bg-[#233226] px-5 py-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#1f2d22] dark:bg-[#fbfaf6] dark:text-[#233226] dark:hover:bg-[#e8f2df]"
+							>
+								<Smartphone className="size-4" />
+								Android App
+							</Link>
+						</div>
 					</div>
-				</div>
-				<div className="mx-auto mt-6 max-w-6xl text-center text-xs text-[#9aa594] dark:text-[#5d6a57] sm:text-left">
-					&copy; {new Date().getFullYear()} Leaf Care. All rights reserved.
+
+					<div className="mt-14 border-t border-[#e5ddd0] pt-8 text-center text-xs text-[#9aa594] dark:border-white/10 dark:text-[#5d6a57]">
+						&copy; {new Date().getFullYear()} Leaf Care. All rights reserved.
+					</div>
 				</div>
 			</footer>
 		</main>
