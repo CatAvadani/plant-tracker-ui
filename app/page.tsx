@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
 	AlertCircle,
@@ -9,8 +9,8 @@ import {
 	CalendarDays,
 	Droplets,
 	HeartPulse,
-	Leaf,
 	LayoutDashboard,
+	Leaf,
 	LogIn,
 	LogOut,
 	MapPin,
@@ -105,7 +105,9 @@ export default function Home() {
 				<nav className="mx-auto flex max-w-6xl items-center justify-between">
 					<Link href="/" className="flex items-center gap-3">
 						<LeafCareLogo size="md" />
-						<span className="text-xl font-semibold leading-none">Leaf Care</span>
+						<span className="text-xl font-semibold leading-none">
+							Leaf Care
+						</span>
 					</Link>
 					<Button asChild variant="ghost" className="rounded-full">
 						<Link href="/login">
@@ -220,11 +222,7 @@ export default function Home() {
 							transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
 							aria-hidden="true"
 						>
-							<svg
-								className="h-full w-full"
-								viewBox="0 0 200 200"
-								fill="none"
-							>
+							<svg className="h-full w-full" viewBox="0 0 200 200" fill="none">
 								<path
 									d="M100 180C60 140 40 100 50 60c8-28 28-48 58-48 10 28 8 54-5 78-12 20-18 48-3 90Z"
 									fill="currentColor"
@@ -249,11 +247,7 @@ export default function Home() {
 							transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
 							aria-hidden="true"
 						>
-							<svg
-								className="h-full w-full"
-								viewBox="0 0 200 200"
-								fill="none"
-							>
+							<svg className="h-full w-full" viewBox="0 0 200 200" fill="none">
 								<path
 									d="M100 170C70 140 55 110 62 80c6-22 24-38 48-38 8 22 6 44-4 64-10 16-14 38-6 64Z"
 									fill="currentColor"
@@ -276,9 +270,9 @@ export default function Home() {
 											<p className="text-[10px] font-semibold leading-none text-[#253326] dark:text-[#eef4ea]">
 												Leaf Care
 											</p>
-											<p className="mt-1 text-[8px] text-[#66745f] dark:text-[#a8b7a4]">
+											{/* <p className="mt-1 text-[8px] text-[#66745f] dark:text-[#a8b7a4]">
 												Collection care
-											</p>
+											</p> */}
 										</div>
 									</div>
 									<nav className="flex-1 space-y-1 p-2">
@@ -366,12 +360,12 @@ export default function Home() {
 													label: "Total Plants",
 													tone: "bg-[#e8f2df] text-[#2f6f4e]",
 												},
-														{
-															icon: Droplets,
-															value: "0",
-															label: "Water Today",
-															tone: "bg-[#f4ead4] text-[#986515]",
-														},
+												{
+													icon: Droplets,
+													value: "0",
+													label: "Water Today",
+													tone: "bg-[#f4ead4] text-[#986515]",
+												},
 												{
 													icon: Leaf,
 													value: "2",
@@ -387,23 +381,23 @@ export default function Home() {
 											].map((stat) => {
 												const Icon = stat.icon;
 												return (
-														<div
-															key={stat.label}
-															className="flex min-h-[3.5rem] items-center gap-1.5 rounded-xl border border-[#e6ddcf] bg-white/90 p-1.5 dark:border-white/10 dark:bg-[#17241c]"
+													<div
+														key={stat.label}
+														className="flex min-h-[3.5rem] items-center gap-1.5 rounded-xl border border-[#e6ddcf] bg-white/90 p-1.5 dark:border-white/10 dark:bg-[#17241c]"
+													>
+														<span
+															className={`grid size-7 shrink-0 place-items-center rounded-lg ${stat.tone}`}
 														>
-															<span
-																className={`grid size-7 shrink-0 place-items-center rounded-lg ${stat.tone}`}
-															>
-																<Icon className="size-3.5" />
-															</span>
-															<div className="min-w-0">
-																<p className="text-base font-semibold leading-none text-[#253326] dark:text-[#f3f6ef]">
-																	{stat.value}
-																</p>
-																<p className="mt-0.5 text-[7px] leading-tight text-[#64705f] dark:text-[#bbc8b6]">
-																	{stat.label}
-																</p>
-															</div>
+															<Icon className="size-3.5" />
+														</span>
+														<div className="min-w-0">
+															<p className="text-base font-semibold leading-none text-[#253326] dark:text-[#f3f6ef]">
+																{stat.value}
+															</p>
+															<p className="mt-0.5 text-[7px] leading-tight text-[#64705f] dark:text-[#bbc8b6]">
+																{stat.label}
+															</p>
+														</div>
 													</div>
 												);
 											})}
@@ -802,8 +796,8 @@ export default function Home() {
 						variants={fadeUp}
 						className="mx-auto mt-6 max-w-xl text-lg leading-8 text-white/70"
 					>
-						From watering schedules to health journals, Leaf Care brings
-						calm and clarity to your indoor garden.
+						From watering schedules to health journals, Leaf Care brings calm
+						and clarity to your indoor garden.
 					</motion.p>
 					<motion.div variants={fadeUp} className="mt-10">
 						<Button
@@ -882,7 +876,9 @@ export default function Home() {
 				<div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
 					<Link href="/" className="flex items-center gap-3">
 						<LeafCareLogo size="sm" />
-						<span className="text-lg font-semibold leading-none">Leaf Care</span>
+						<span className="text-lg font-semibold leading-none">
+							Leaf Care
+						</span>
 					</Link>
 					<div className="flex items-center gap-6 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
 						<Link

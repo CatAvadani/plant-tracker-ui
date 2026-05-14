@@ -1,12 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -76,9 +72,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 				<LeafCareLogo size="md" />
 				<div>
 					<p className="text-lg font-semibold leading-none">Leaf Care</p>
-					<p className="mt-1 text-xs text-[#66745f] dark:text-[#a8b7a4]">
+					{/* <p className="mt-1 text-xs text-[#66745f] dark:text-[#a8b7a4]">
 						Collection care
-					</p>
+					</p> */}
 				</div>
 			</div>
 			<nav className="flex-1 space-y-1 px-3 py-4">
