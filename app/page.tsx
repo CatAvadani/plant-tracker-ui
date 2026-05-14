@@ -125,13 +125,6 @@ export default function Home() {
 						animate="visible"
 						variants={stagger}
 					>
-						<motion.div
-							variants={fadeUp}
-							className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#d8cab5] bg-white/70 px-3 py-1 text-sm text-[#52624e] shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/10 dark:text-[#c7d8bd]"
-						>
-							<Leaf className="size-4 text-[#2f6f4e] dark:text-[#9bd5a5]" />
-							Collection care for every windowsill
-						</motion.div>
 						<motion.h1
 							variants={fadeUp}
 							className="max-w-3xl text-6xl font-semibold leading-[1.02] tracking-normal text-[#1f2d22] sm:text-7xl lg:text-[5.5rem] dark:text-[#f5f7f0]"
@@ -208,6 +201,19 @@ export default function Home() {
 							</div>
 						</motion.div>
 
+						<motion.p
+							variants={fadeUp}
+							className="mt-5 inline-flex items-center gap-2 text-sm text-[#5d6a57] dark:text-[#bfccb8]"
+						>
+							<Smartphone className="size-3.5 text-[#2f6f4e] dark:text-[#9bd5a5]" />
+							Also on{" "}
+							<Link
+								href="#"
+								className="text-[#2f6f4e] underline-offset-2 hover:underline dark:text-[#9bd5a5]"
+							>
+								Android
+							</Link>
+						</motion.p>
 					</motion.div>
 
 					{/* Hero Illustration — dashboard shell preview */}
