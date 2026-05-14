@@ -136,7 +136,7 @@ export default function Home() {
 							className="max-w-3xl text-6xl font-semibold leading-[1.02] tracking-normal text-[#1f2d22] sm:text-7xl lg:text-[5.5rem] dark:text-[#f5f7f0]"
 							style={{ fontFamily: "var(--font-playfair)" }}
 						>
-							Your plants, beautifully tracked
+							Never lose a plant again
 						</motion.h1>
 						<motion.p
 							variants={fadeUp}
