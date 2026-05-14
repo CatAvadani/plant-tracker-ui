@@ -23,7 +23,6 @@ import {
 	Leaf,
 	Plus,
 	Search,
-	Sprout,
 	X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -32,7 +31,7 @@ const statCards = [
 	{
 		label: "Total Plants",
 		key: "total",
-		icon: Sprout,
+		icon: Leaf,
 		className: "bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]",
 	},
 	{
@@ -368,7 +367,7 @@ export default function DashboardPage() {
 					<Card className="border-dashed border-[#d8cab5] bg-white/70 dark:border-white/15 dark:bg-white/5">
 						<CardContent className="flex min-h-72 flex-col items-center justify-center py-10 text-center">
 							<div className="grid size-14 place-items-center rounded-lg bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
-								<Sprout className="size-7" />
+								<Leaf className="size-7" />
 							</div>
 							<h3 className="mt-5 text-xl font-semibold">No plants yet</h3>
 							<p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">

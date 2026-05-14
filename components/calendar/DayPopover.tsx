@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import type { ScheduledDay } from "@/hooks/useWateringSchedule";
 import { HealthStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { AlertCircle, Leaf, Sprout } from "lucide-react";
+import { AlertCircle, Leaf } from "lucide-react";
 
 function healthLabel(status: HealthStatus) {
 	if (status === HealthStatus.Thriving) return "Thriving";
@@ -46,7 +46,7 @@ export function DayPopover({ scheduledDay }: { scheduledDay: ScheduledDay }) {
 						status === "overdue"
 							? AlertCircle
 							: status === "today"
-								? Sprout
+								? Leaf
 								: Leaf;
 
 					return (

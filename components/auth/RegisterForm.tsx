@@ -46,7 +46,7 @@ export function RegisterForm() {
 		<Card className="w-full max-w-md">
 			<CardHeader>
 				<CardTitle>Create an account</CardTitle>
-				<CardDescription>Start tracking your plant collection</CardDescription>
+				<CardDescription>Start caring for your plant collection</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

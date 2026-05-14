@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
 import {
 	Dialog,
 	DialogContent,
@@ -22,7 +23,6 @@ import {
 	LogOut,
 	Menu,
 	Settings,
-	Sprout,
 	User,
 } from "lucide-react";
 import Link from "next/link";
@@ -36,7 +36,7 @@ const navItems = [
 ];
 
 function getInitials(name?: string, email?: string) {
-	const source = name || email || "Plant Tracker";
+	const source = name || email || "Leaf Care";
 	return source
 		.split(/[ @._-]/)
 		.filter(Boolean)
@@ -73,11 +73,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 	const sidebar = (
 		<div className="flex h-full flex-col bg-[#f7f2e8] text-[#253326] dark:bg-[#17241c] dark:text-[#eef4ea]">
 			<div className="flex h-16 items-center gap-3 border-b border-[#d9cdb8] px-5 dark:border-white/10">
-				<div className="grid size-9 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
-					<Sprout className="size-5" />
-				</div>
+				<LeafCareLogo size="md" />
 				<div>
-					<p className="text-sm font-semibold leading-none">Plant Tracker</p>
+					<p className="text-lg font-semibold leading-none">Leaf Care</p>
 					<p className="mt-1 text-xs text-[#66745f] dark:text-[#a8b7a4]">
 						Collection care
 					</p>
@@ -148,7 +146,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 						</Button>
 						<div>
 							<p className="text-xs font-medium uppercase tracking-[0.16em] text-[#728268] dark:text-[#a9b8a0]">
-								Plant Collection
+								Leaf Care
 							</p>
 							<h1 className="text-xl font-semibold">{pageTitle}</h1>
 						</div>

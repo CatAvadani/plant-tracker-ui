@@ -6,7 +6,6 @@ import {
 	HeartPulse,
 	Leaf,
 	Scissors,
-	Sprout,
 	type LucideIcon,
 } from "lucide-react";
 
@@ -21,7 +20,7 @@ export type CareLogEntryMeta = {
 export const careLogEntryMeta: Record<CareLogEntryType, CareLogEntryMeta> = {
 	[CareLogEntryType.Watered]: {
 		label: "Watered",
-		icon: Sprout,
+		icon: Leaf,
 		dotClassName: "bg-blue-500",
 		textClassName: "text-blue-700 dark:text-blue-300",
 		bgClassName: "bg-blue-50 dark:bg-blue-950/30",

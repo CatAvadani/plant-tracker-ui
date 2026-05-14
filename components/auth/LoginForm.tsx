@@ -51,7 +51,7 @@ export function LoginForm() {
 		<Card className="w-full max-w-md">
 			<CardHeader>
 				<CardTitle>Welcome back</CardTitle>
-				<CardDescription>Log in to your Plant Tracker account</CardDescription>
+				<CardDescription>Log in to your Leaf Care account</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

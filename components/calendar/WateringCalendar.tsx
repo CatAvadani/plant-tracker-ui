@@ -18,7 +18,7 @@ import {
 } from "@/hooks/useWateringSchedule";
 import { usePlants } from "@/hooks/usePlants";
 import { cn } from "@/lib/utils";
-import { CalendarDays, ChevronLeft, ChevronRight, Sprout } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Leaf } from "lucide-react";
 import { useMemo, useState } from "react";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -278,7 +278,7 @@ export function WateringCalendar() {
 														to water
 													</p>
 												</div>
-												<Sprout className="size-5 text-[#2f6f4e] dark:text-[#a8e0b1]" />
+												<Leaf className="size-5 text-[#2f6f4e] dark:text-[#a8e0b1]" />
 											</div>
 										</button>
 									</PopoverTrigger>

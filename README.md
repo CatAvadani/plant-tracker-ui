@@ -1,6 +1,6 @@
-# Plant Tracker UI
+# Leaf Care UI
 
-Plant Tracker UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication and API-key-protected plant CRUD endpoints.
+Leaf Care UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication and API-key-protected plant CRUD endpoints.
 
 ## Features
 

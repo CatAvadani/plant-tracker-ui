@@ -22,8 +22,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-	title: "Plant Tracker",
-	description: "Track and manage your plant collection",
+	title: "Leaf Care",
+	description: "Track watering, health, and care for your plants",
 };
 
 export default function RootLayout({

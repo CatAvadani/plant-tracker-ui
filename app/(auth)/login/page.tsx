@@ -1,9 +1,10 @@
 "use client";
 
-import { LoginForm } from "@/components/auth/LoginForm";
 import { AuthPlantBackdrop } from "@/components/auth/AuthPlantBackdrop";
-import { Leaf, Sprout } from "lucide-react";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
 import { motion } from "framer-motion";
+import { Leaf } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -14,10 +15,8 @@ export default function LoginPage() {
 				<AuthPlantBackdrop />
 
 				<Link href="/" className="relative flex items-center gap-3">
-					<span className="grid size-10 place-items-center rounded-lg bg-white/15 ring-1 ring-white/25">
-						<Sprout className="size-5" />
-					</span>
-					<span className="text-sm font-semibold">Plant Tracker</span>
+					<LeafCareLogo size="md" />
+					<span className="text-xl font-semibold leading-none">Leaf Care</span>
 				</Link>
 				<div className="relative mb-16 max-w-3xl xl:mb-20">
 					<motion.div
@@ -33,8 +32,8 @@ export default function LoginPage() {
 							Come back to a calmer collection.
 						</h1>
 						<p className="mt-6 max-w-2xl text-xl leading-8 text-white/80">
-							Review watering schedules, care notes, and health changes from
-							one quiet dashboard.
+							Review watering schedules, care notes, and health changes from one
+							quiet dashboard.
 						</p>
 					</motion.div>
 				</div>
@@ -49,10 +48,10 @@ export default function LoginPage() {
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
 				>
 					<div className="mb-8 flex items-center justify-center gap-3 lg:hidden">
-						<span className="grid size-10 place-items-center rounded-lg bg-[#2f6f4e] text-white">
-							<Sprout className="size-5" />
+						<LeafCareLogo size="md" />
+						<span className="text-xl font-semibold leading-none">
+							Leaf Care
 						</span>
-						<span className="text-sm font-semibold">Plant Tracker</span>
 					</div>
 					<div className="[&_input]:h-11 [&_input]:rounded-xl [&_input]:border-[#cfc1ad] [&_input]:bg-white/70 [&_input]:px-4 [&_input]:text-base [&_input]:shadow-sm [&_input]:transition-all [&_input]:duration-200 [&_input]:placeholder:text-[#9aa594]/70 [&_input]:focus-visible:border-[#2f6f4e] [&_input]:focus-visible:bg-white [&_input]:focus-visible:shadow-md [&_input]:focus-visible:ring-2 [&_input]:focus-visible:ring-[#2f6f4e]/20 dark:[&_input]:border-white/15 dark:[&_input]:bg-white/10 dark:[&_input]:text-white dark:[&_input]:focus-visible:bg-white/15">
 						<LoginForm />

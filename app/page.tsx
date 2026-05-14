@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
 import { motion } from "framer-motion";
 import {
 	AlertCircle,
@@ -18,7 +19,6 @@ import {
 	Plus,
 	Search,
 	Settings,
-	Sprout,
 	Star,
 } from "lucide-react";
 import Link from "next/link";
@@ -104,10 +104,8 @@ export default function Home() {
 
 				<nav className="mx-auto flex max-w-6xl items-center justify-between">
 					<Link href="/" className="flex items-center gap-3">
-						<span className="grid size-10 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
-							<Sprout className="size-5" />
-						</span>
-						<span className="text-sm font-semibold">Plant Tracker</span>
+						<LeafCareLogo size="md" />
+						<span className="text-xl font-semibold leading-none">Leaf Care</span>
 					</Link>
 					<Button asChild variant="ghost" className="rounded-full">
 						<Link href="/login">
@@ -273,12 +271,10 @@ export default function Home() {
 							<div className="grid h-[23rem] grid-cols-[8.5rem_1fr]">
 								<aside className="flex min-w-0 flex-col border-r border-[#e1d7c5] bg-[#f7f2e8] dark:border-white/10 dark:bg-[#17241c]">
 									<div className="flex h-14 items-center gap-2 border-b border-[#d9cdb8] px-3 dark:border-white/10">
-										<span className="grid size-8 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
-											<Sprout className="size-4" />
-										</span>
+										<LeafCareLogo size="sm" />
 										<div>
 											<p className="text-[10px] font-semibold leading-none text-[#253326] dark:text-[#eef4ea]">
-												Plant Tracker
+												Leaf Care
 											</p>
 											<p className="mt-1 text-[8px] text-[#66745f] dark:text-[#a8b7a4]">
 												Collection care
@@ -311,7 +307,7 @@ export default function Home() {
 									<header className="flex h-14 items-center justify-between border-b border-[#e5dccd] bg-[#fbfaf6]/90 px-4 dark:border-white/10 dark:bg-[#101912]/88">
 										<div>
 											<p className="text-[9px] font-medium uppercase tracking-[0.16em] text-[#728268] dark:text-[#a9b8a0]">
-												Plant Collection
+												Leaf Care
 											</p>
 											<p className="text-base font-semibold text-[#253326] dark:text-[#f3f6ef]">
 												Dashboard
@@ -365,7 +361,7 @@ export default function Home() {
 										<div className="grid grid-cols-4 gap-2">
 											{[
 												{
-													icon: Sprout,
+													icon: Leaf,
 													value: "3",
 													label: "Total Plants",
 													tone: "bg-[#e8f2df] text-[#2f6f4e]",
@@ -694,7 +690,7 @@ export default function Home() {
 								num: "01",
 								title: "Add your plants",
 								desc: "Create a profile for each plant with species, location, and watering needs.",
-								icon: Sprout,
+								icon: Leaf,
 							},
 							{
 								num: "02",
@@ -806,7 +802,7 @@ export default function Home() {
 						variants={fadeUp}
 						className="mx-auto mt-6 max-w-xl text-lg leading-8 text-white/70"
 					>
-						From watering schedules to health journals, Plant Tracker brings
+						From watering schedules to health journals, Leaf Care brings
 						calm and clarity to your indoor garden.
 					</motion.p>
 					<motion.div variants={fadeUp} className="mt-10">
@@ -885,10 +881,8 @@ export default function Home() {
 			<footer className="border-t border-[#e5ddd0] bg-[#fbfaf6] px-6 py-10 dark:border-white/10 dark:bg-[#101912]">
 				<div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
 					<Link href="/" className="flex items-center gap-3">
-						<span className="grid size-9 place-items-center rounded-lg bg-[#2f6f4e] text-white shadow-sm">
-							<Sprout className="size-4" />
-						</span>
-						<span className="text-sm font-semibold">Plant Tracker</span>
+						<LeafCareLogo size="sm" />
+						<span className="text-lg font-semibold leading-none">Leaf Care</span>
 					</Link>
 					<div className="flex items-center gap-6 text-sm text-[#5d6a57] dark:text-[#bfccb8]">
 						<Link
@@ -906,7 +900,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="mx-auto mt-6 max-w-6xl text-center text-xs text-[#9aa594] dark:text-[#5d6a57] sm:text-left">
-					&copy; {new Date().getFullYear()} Plant Tracker. All rights reserved.
+					&copy; {new Date().getFullYear()} Leaf Care. All rights reserved.
 				</div>
 			</footer>
 		</main>
