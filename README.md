@@ -56,7 +56,6 @@ The frontend expects the backend to expose:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
-- `POST /api/apikey/generate`
 - `PATCH /api/users/me`
 - `GET /api/plants`
 - `GET /api/plants/{id}`
@@ -65,12 +64,9 @@ The frontend expects the backend to expose:
 - `PUT /api/plants/{id}`
 - `DELETE /api/plants/{id}`
 
-Plant API calls send both headers internally:
+Authenticated API calls send this header internally:
 
 - `Authorization: Bearer {token}`
-- `X-Api-Key: {apiKey}`
-
-The UI creates or retrieves the API key automatically after login. API-key details are not shown to users.
 
 Profile updates use `PATCH /api/users/me` with `displayName`; email is read-only in the UI.
 
