@@ -1,6 +1,5 @@
 "use client";
 
-import { authApi } from "@/lib/authApi";
 import { plantApi } from "@/lib/plantApi";
 import type { Plant } from "@/lib/types";
 import type { PlantFormData } from "@/lib/validators";
@@ -11,54 +10,28 @@ const plantsKey = ["plants"] as const;
 
 function useCredentials() {
 	const token = useAuthStore((state) => state.token);
-	const apiKey = useAuthStore((state) => state.apiKey);
-	const setApiKey = useAuthStore((state) => state.setApiKey);
 
 	return {
 		token,
-		apiKey,
-		setApiKey,
-		isReady: Boolean(token && apiKey),
+		isReady: Boolean(token),
 	};
 }
 
-async function getOrCreateApiKey(
-	token: string | null,
-	apiKey: string | null,
-	setApiKey: (apiKey: string | null) => void,
-) {
+function getToken(token: string | null) {
 	if (!token) throw new Error("Missing token");
-	if (apiKey) return apiKey;
-
-	const response = await authApi.generateApiKey(token);
-	setApiKey(response.apiKey);
-	return response.apiKey;
-}
-
-async function getCredentials(
-	token: string | null,
-	apiKey: string | null,
-	setApiKey: (apiKey: string | null) => void,
-) {
-	if (!token) throw new Error("Missing token");
-
-	return {
-		token,
-		apiKey: await getOrCreateApiKey(token, apiKey, setApiKey),
-	};
+	return token;
 }
 
 export function usePlants() {
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useQuery({
-		queryKey: [...plantsKey, token, apiKey],
+		queryKey: [...plantsKey, token],
 		queryFn: async () => {
 			if (!token) return [];
 
 			try {
-				const key = await getOrCreateApiKey(token, apiKey, setApiKey);
-				return plantApi.getAll(token, key);
+				return plantApi.getAll(token);
 			} catch {
 				return [];
 			}
@@ -68,16 +41,15 @@ export function usePlants() {
 }
 
 export function usePlant(id: number | null) {
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useQuery({
-		queryKey: [...plantsKey, id, token, apiKey],
+		queryKey: [...plantsKey, id, token],
 		queryFn: async () => {
 			if (!token || id === null) return null;
 
 			try {
-				const key = await getOrCreateApiKey(token, apiKey, setApiKey);
-				return plantApi.getById(id, token, key);
+				return plantApi.getById(id, token);
 			} catch {
 				return null;
 			}
@@ -88,12 +60,11 @@ export function usePlant(id: number | null) {
 
 export function useCreatePlant() {
 	const queryClient = useQueryClient();
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useMutation({
 		mutationFn: async (data: PlantFormData) => {
-			const credentials = await getCredentials(token, apiKey, setApiKey);
-			return plantApi.create(data, credentials.token, credentials.apiKey);
+			return plantApi.create(data, getToken(token));
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
@@ -103,12 +74,11 @@ export function useCreatePlant() {
 
 export function useUpdatePlant() {
 	const queryClient = useQueryClient();
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useMutation({
 		mutationFn: async ({ id, data }: { id: number; data: PlantFormData }) => {
-			const credentials = await getCredentials(token, apiKey, setApiKey);
-			return plantApi.update(id, data, credentials.token, credentials.apiKey);
+			return plantApi.update(id, data, getToken(token));
 		},
 		onSuccess: (plant) => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
@@ -119,12 +89,11 @@ export function useUpdatePlant() {
 
 export function useDeletePlant() {
 	const queryClient = useQueryClient();
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useMutation({
 		mutationFn: async (id: number) => {
-			const credentials = await getCredentials(token, apiKey, setApiKey);
-			return plantApi.delete(id, credentials.token, credentials.apiKey);
+			return plantApi.delete(id, getToken(token));
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: plantsKey });
@@ -133,12 +102,11 @@ export function useDeletePlant() {
 }
 
 export function useUploadPlantImage() {
-	const { token, apiKey, setApiKey } = useCredentials();
+	const { token } = useCredentials();
 
 	return useMutation({
 		mutationFn: async (file: File) => {
-			const credentials = await getCredentials(token, apiKey, setApiKey);
-			return plantApi.uploadImage(file, credentials.token, credentials.apiKey);
+			return plantApi.uploadImage(file, getToken(token));
 		},
 	});
 }
