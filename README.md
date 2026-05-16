@@ -1,6 +1,6 @@
 # Leaf Care UI
 
-Leaf Care UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication and API-key-protected plant CRUD endpoints.
+Leaf Care UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication for plant CRUD, image upload, care logs, profile updates, and AI plant analysis.
 
 ## Features
 
