@@ -14,7 +14,6 @@ import {
 	LogIn,
 	LogOut,
 	MapPin,
-	Monitor,
 	MoreHorizontal,
 	NotebookPen,
 	Plus,
@@ -991,6 +990,15 @@ export default function Home() {
 
 					<div className="mt-14 border-t border-[#e5ddd0] pt-8 text-center text-xs text-[#9aa594] dark:border-white/10 dark:text-[#5d6a57]">
 						&copy; {new Date().getFullYear()} Leaf Care. All rights reserved.
+						<span className="mx-2" aria-hidden="true">
+							/
+						</span>
+						<Link
+							href="/privacy"
+							className="transition-colors hover:text-[#1f2d22] dark:hover:text-[#f5f7f0]"
+						>
+							Privacy Policy
+						</Link>
 					</div>
 				</div>
 			</footer>
