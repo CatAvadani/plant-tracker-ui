@@ -61,6 +61,10 @@ const healthFilters = [
 	{ label: "Critical", value: HealthStatus.Critical },
 ] as const;
 
+function pluralize(count: number, singular: string, plural = `${singular}s`) {
+	return count === 1 ? singular : plural;
+}
+
 export default function DashboardPage() {
 	const [formOpen, setFormOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
@@ -87,6 +91,23 @@ export default function DashboardPage() {
 			}).length,
 		[plants],
 	);
+	const todaysSummary = useMemo(() => {
+		const dueToday = plants.filter((plant) => getDaysUntilWatering(plant) === 0);
+		const overdue = plants.filter((plant) => {
+			const days = getDaysUntilWatering(plant);
+			return days !== null && days < 0;
+		});
+		const missingWateringHistory = plants.filter(
+			(plant) => getDaysUntilWatering(plant) === null,
+		);
+
+		return {
+			dueToday,
+			overdue,
+			missingWateringHistory,
+			priorityPlants: [...overdue, ...dueToday].slice(0, 4),
+		};
+	}, [plants]);
 
 	const stats = useMemo(
 		() => ({
@@ -107,6 +128,57 @@ export default function DashboardPage() {
 			: plantsNeedingWater === 1
 				? "1 plant needs watering today"
 				: `${plantsNeedingWater} plants need watering today`;
+	const detailedInsights = useMemo(() => {
+		const needsAttention = plants.filter(
+			(plant) => plant.healthStatus === HealthStatus.NeedsAttention,
+		).length;
+		const critical = plants.filter(
+			(plant) => plant.healthStatus === HealthStatus.Critical,
+		).length;
+		const trackedWatering = plants.length - todaysSummary.missingWateringHistory.length;
+		const averageFrequency =
+			plants.length === 0
+				? 0
+				: Math.round(
+						plants.reduce(
+							(total, plant) => total + plant.wateringFrequencyDays,
+							0,
+						) / plants.length,
+					);
+
+		return [
+			{
+				label: "Watering load",
+				value: `${todaysSummary.overdue.length} overdue`,
+				body:
+					todaysSummary.dueToday.length > 0
+						? `${todaysSummary.dueToday.length} ${pluralize(
+								todaysSummary.dueToday.length,
+								"plant",
+							)} due today.`
+						: "No plants are due exactly today.",
+			},
+			{
+				label: "Health watch",
+				value: `${needsAttention + critical} flagged`,
+				body:
+					needsAttention + critical > 0
+						? `${needsAttention} need attention and ${critical} are critical.`
+						: "All tracked plants are currently marked thriving.",
+			},
+			{
+				label: "Care coverage",
+				value: `${trackedWatering}/${plants.length || 0} tracked`,
+				body:
+					plants.length > 0
+						? `Average watering cadence is ${averageFrequency} ${pluralize(
+								averageFrequency,
+								"day",
+							)}.`
+						: "Add plants to start building care insights.",
+			},
+		];
+	}, [plants, todaysSummary]);
 	const uniqueLocations = useMemo(
 		() =>
 			Array.from(
@@ -174,22 +246,78 @@ export default function DashboardPage() {
 				</Button>
 			</div>
 
-			<Card className="mb-4 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
-				<CardContent className="flex items-center gap-3 py-1">
-					<div
-						className={`grid size-10 shrink-0 place-items-center rounded-lg ${
-							plantsNeedingWater > 0
-								? "bg-[#f4ead4] text-[#986515] dark:bg-[#3a2b14] dark:text-[#f2c66d]"
-								: "bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]"
-						}`}
-					>
-						<Droplets className="size-5" />
+			<Card className="mb-4 min-w-0 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
+				<CardContent className="space-y-4 py-1">
+					<div className="flex min-w-0 items-center gap-3">
+						<div
+							className={`grid size-10 shrink-0 place-items-center rounded-lg ${
+								plantsNeedingWater > 0
+									? "bg-[#f4ead4] text-[#986515] dark:bg-[#3a2b14] dark:text-[#f2c66d]"
+									: "bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]"
+							}`}
+						>
+							<Droplets className="size-5" />
+						</div>
+						<div className="min-w-0">
+							<p className="text-xs font-medium uppercase tracking-[0.14em] text-[#728268] dark:text-[#a9b8a0]">
+								Today&apos;s summary
+							</p>
+							<p className="mt-1 font-medium">{wateringSummary}</p>
+							<p className="text-sm text-muted-foreground">
+								Based on each plant&apos;s last watering and care cadence.
+							</p>
+						</div>
 					</div>
-					<div className="min-w-0">
-						<p className="font-medium">{wateringSummary}</p>
-						<p className="text-sm text-muted-foreground">
-							Based on each plant&apos;s last watering and care cadence.
+					{todaysSummary.priorityPlants.length > 0 && (
+						<div className="flex min-w-0 flex-wrap gap-2 border-t border-[#eee6da] pt-4 dark:border-white/10">
+							{todaysSummary.priorityPlants.map((plant) => {
+								const days = getDaysUntilWatering(plant);
+								const label =
+									days !== null && days < 0
+										? `${Math.abs(days)} ${pluralize(Math.abs(days), "day")} overdue`
+										: "Due today";
+
+								return (
+									<Badge
+										key={plant.id}
+										variant="outline"
+										className="max-w-full border-[#d8cab5] bg-white/70 text-[#57634f] dark:border-white/15 dark:bg-white/5 dark:text-[#c4d0bd]"
+									>
+										<span className="truncate">{plant.name}</span>
+										<span className="text-[#b45309] dark:text-amber-300">
+											{label}
+										</span>
+									</Badge>
+								);
+							})}
+						</div>
+					)}
+				</CardContent>
+			</Card>
+
+			<Card className="mb-4 min-w-0 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
+				<CardContent className="space-y-4 py-1">
+					<div>
+						<p className="text-xs font-medium uppercase tracking-[0.14em] text-[#728268] dark:text-[#a9b8a0]">
+							Detailed insights
 						</p>
+						<p className="mt-1 text-sm text-muted-foreground">
+							A quick read on watering pressure, plant health, and care coverage.
+						</p>
+					</div>
+					<div className="grid min-w-0 gap-3 md:grid-cols-[repeat(3,minmax(0,1fr))]">
+						{detailedInsights.map((insight) => (
+							<div
+								key={insight.label}
+								className="min-w-0 rounded-lg border border-[#eee6da] bg-[#fbfaf6] p-4 dark:border-white/10 dark:bg-white/5"
+							>
+								<p className="text-sm text-muted-foreground">{insight.label}</p>
+								<p className="mt-2 text-xl font-semibold">{insight.value}</p>
+								<p className="mt-1 text-sm leading-6 text-[#64705f] dark:text-[#bbc8b6]">
+									{insight.body}
+								</p>
+							</div>
+						))}
 					</div>
 				</CardContent>
 			</Card>
