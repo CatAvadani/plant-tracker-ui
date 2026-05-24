@@ -1,6 +1,6 @@
 import { LeafCareLogo } from "@/components/brand/LeafCareLogo";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mail } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,6 +8,9 @@ export const metadata: Metadata = {
 	title: "Privacy Policy | Leaf Care",
 	description: "Privacy Policy for the Leaf Care plant tracking app.",
 };
+
+const deletionMailtoHref =
+	"mailto:hello@catalinaavadani.com?subject=Account%20Deletion%20Request";
 
 const policySections = [
 	{
@@ -25,10 +28,6 @@ const policySections = [
 	{
 		title: "Notifications",
 		body: "Leaf Care sends local push notifications to remind you when plants need watering. These notifications are scheduled on-device and can be disabled at any time from the Settings screen or your device notification settings.",
-	},
-	{
-		title: "Data Deletion",
-		body: "You may delete individual plants and care logs at any time within the app. To request full account deletion and removal of all associated data, contact us at the email address below.",
 	},
 	{
 		title: "Contact",
@@ -85,6 +84,37 @@ export default function PrivacyPage() {
 							</p>
 						</section>
 					))}
+
+					<section className="max-w-3xl border-t border-[#e5ddd0] pt-8 dark:border-white/10">
+						<h2 className="text-xl font-bold tracking-normal text-[#1f2d22] dark:text-[#f5f7f0]">
+							Data Deletion
+						</h2>
+						<p className="mt-3 text-base leading-7 text-[#64705f] dark:text-[#bbc8b6]">
+							You may delete individual plants and care logs at any time within
+							the app. To request deletion of your account and all associated
+							data, email hello@catalinaavadani.com with the subject line
+							&quot;Account Deletion Request&quot; and include your registered
+							email address in the body.
+						</p>
+						<div className="mt-5 flex flex-col gap-3 sm:flex-row">
+							<Button
+								asChild
+								className="h-11 bg-[#2f6f4e] px-5 text-white hover:bg-[#285f43]"
+							>
+								<a href={deletionMailtoHref}>
+									<Mail className="size-4" />
+									Email deletion request
+								</a>
+							</Button>
+							<Button
+								asChild
+								variant="outline"
+								className="h-11 border-[#d8c6b8] text-[#2f6f4e] hover:bg-[#e8f2df] hover:text-[#285f43] dark:border-white/15 dark:text-[#a8e0b1] dark:hover:bg-white/10"
+							>
+								<Link href="/delete-account">View deletion instructions</Link>
+							</Button>
+						</div>
+					</section>
 				</div>
 			</section>
 		</main>

@@ -14,6 +14,7 @@ import { authApi } from "@/lib/authApi";
 import { type LoginFormData, loginSchema } from "@/lib/validators";
 import { useAuthStore } from "@/store/authStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,7 +42,12 @@ export function LoginForm() {
 			setUser(response.user);
 			toast.success("Welcome back!");
 			router.push("/dashboard");
-		} catch {
+		} catch (error) {
+			if (axios.isAxiosError(error) && !error.response) {
+				toast.error("Could not reach the Leaf Care API.");
+				return;
+			}
+
 			toast.error("Invalid email or password.");
 		}
 	};
