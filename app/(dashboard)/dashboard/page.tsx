@@ -150,7 +150,7 @@ export default function DashboardPage() {
 	};
 
 	return (
-		<div className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+		<div className="relative mx-auto w-full max-w-7xl min-w-0 px-4 py-6 sm:px-6 lg:px-8">
 			<div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 				<div>
 					<Badge className="mb-3 bg-[#e8f2df] text-[#2f6f4e] dark:bg-[#203d2c] dark:text-[#a8e0b1]">
@@ -194,11 +194,11 @@ export default function DashboardPage() {
 				</CardContent>
 			</Card>
 
-			<div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+			<div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-[repeat(4,minmax(0,1fr))]">
 				{statCards.map((card) => {
 					const Icon = card.icon;
 					return (
-						<Card key={card.key} className="border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
+						<Card key={card.key} className="min-w-0 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
 							<CardContent className="flex items-center gap-4 py-1">
 								<div className={`grid size-11 place-items-center rounded-lg ${card.className}`}>
 									<Icon className="size-5" />
@@ -216,8 +216,8 @@ export default function DashboardPage() {
 			{plants.length > 0 && (
 				<Card className="mt-4 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
 					<CardContent className="space-y-4 py-1">
-						<div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-							<div className="relative w-full lg:max-w-sm">
+						<div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+							<div className="relative w-full min-w-0 lg:max-w-sm">
 								<Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 								<Input
 									type="search"
@@ -243,8 +243,8 @@ export default function DashboardPage() {
 								)}
 							</div>
 
-							<div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between lg:justify-end">
-								<div className="flex flex-wrap gap-2">
+							<div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between lg:justify-end">
+								<div className="flex min-w-0 flex-wrap gap-2">
 									{healthFilters.map((filter) => (
 										<Button
 											key={filter.label}
@@ -269,7 +269,7 @@ export default function DashboardPage() {
 											type="button"
 											variant="outline"
 											className={cn(
-												"justify-between border-[#d8cab5] bg-white/70 text-[#57634f] hover:bg-[#f4efe5] sm:min-w-44 dark:border-white/15 dark:bg-white/5 dark:text-[#c4d0bd]",
+												"min-w-0 justify-between border-[#d8cab5] bg-white/70 text-[#57634f] hover:bg-[#f4efe5] sm:min-w-44 dark:border-white/15 dark:bg-white/5 dark:text-[#c4d0bd]",
 												locationFilter !== "all" &&
 													"border-[#2f6f4e] bg-[#e8f2df] text-[#2f6f4e] hover:bg-[#e8f2df] dark:border-[#a8e0b1] dark:bg-[#203d2c] dark:text-[#a8e0b1]",
 											)}
@@ -314,9 +314,9 @@ export default function DashboardPage() {
 
 			<div className="mt-6">
 				{isLoading ? (
-					<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+					<div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(3,minmax(0,1fr))]">
 						{Array.from({ length: 6 }).map((_, index) => (
-							<Card key={index} className="border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
+							<Card key={index} className="min-w-0 border-[#e6ddcf] bg-white/90 dark:border-white/10 dark:bg-[#17241c]">
 								<CardContent className="space-y-4 py-1">
 									<div className="flex items-center gap-3">
 										<Skeleton className="size-12 rounded-lg" />
@@ -344,7 +344,7 @@ export default function DashboardPage() {
 						</CardContent>
 					</Card>
 				) : plants.length > 0 && filteredPlants.length > 0 ? (
-					<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+					<div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(3,minmax(0,1fr))]">
 						{filteredPlants.map((plant) => (
 							<PlantCard key={plant.id} plant={plant} />
 						))}

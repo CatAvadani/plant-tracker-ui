@@ -115,7 +115,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 	);
 
 	return (
-		<div className="min-h-screen bg-[#fbfaf6] text-[#253326] dark:bg-[#101912] dark:text-[#f3f6ef]">
+		<div className="min-h-screen overflow-x-hidden bg-[#fbfaf6] text-[#253326] dark:bg-[#101912] dark:text-[#f3f6ef]">
 			<aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-[#e1d7c5] lg:block dark:border-white/10">
 				{sidebar}
 			</aside>
@@ -127,7 +127,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 				</DialogContent>
 			</Dialog>
 
-			<div className="lg:pl-64">
+			<div className="min-w-0 lg:pl-64">
 				<header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#e5dccd] bg-[#fbfaf6]/90 px-4 backdrop-blur-md sm:px-6 dark:border-white/10 dark:bg-[#101912]/88">
 					<div className="flex items-center gap-3">
 						<Button
@@ -184,7 +184,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</header>
-				<main className="min-h-[calc(100vh-4rem)]">{children}</main>
+				<main className="min-h-[calc(100vh-4rem)] min-w-0 overflow-x-hidden">
+					{children}
+				</main>
 			</div>
 		</div>
 	);

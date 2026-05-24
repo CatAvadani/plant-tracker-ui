@@ -165,7 +165,7 @@ export function PlantCard({ plant }: { plant: Plant }) {
 
 	return (
 		<>
-			<Card className="border border-[#e6ddcf] bg-white/90 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#17241c]">
+			<Card className="min-w-0 border border-[#e6ddcf] bg-white/90 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-[#17241c]">
 				<CardHeader className="gap-3">
 					<div className="flex items-start gap-3">
 						<div className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-lg bg-[#e2efd7] text-[#2f6f4e] dark:bg-[#254431] dark:text-[#b6e2be]">
@@ -217,29 +217,31 @@ export function PlantCard({ plant }: { plant: Plant }) {
 						{plant.location && (
 							<Badge
 								variant="outline"
-								className="gap-1 border-[#d8cab5] text-[#57634f] dark:border-white/15 dark:text-[#c4d0bd]"
+								className="max-w-full gap-1 border-[#d8cab5] text-[#57634f] dark:border-white/15 dark:text-[#c4d0bd]"
 							>
-								<MapPin className="size-3" />
-								{plant.location}
+								<MapPin className="size-3 shrink-0" />
+								<span className="truncate">{plant.location}</span>
 							</Badge>
 						)}
 					</div>
 					<div className="grid gap-2 text-sm">
-						<div className="flex items-center justify-between gap-3">
-							<span className="flex items-center gap-2 text-muted-foreground">
+						<div className="flex min-w-0 items-center justify-between gap-3">
+							<span className="flex min-w-0 items-center gap-2 text-muted-foreground">
 								<CalendarDays className="size-4" />
-								Last watered
+								<span className="truncate">Last watered</span>
 							</span>
-							<span className="font-medium">{formatDate(plant.lastWatered)}</span>
+							<span className="shrink-0 truncate font-medium">
+								{formatDate(plant.lastWatered)}
+							</span>
 						</div>
-						<div className="flex items-center justify-between gap-3">
-							<span className="flex items-center gap-2 text-muted-foreground">
+						<div className="flex min-w-0 items-center justify-between gap-3">
+							<span className="flex min-w-0 items-center gap-2 text-muted-foreground">
 								<Droplets className="size-4" />
-								Next watering
+								<span className="truncate">Next watering</span>
 							</span>
 							<span
 								className={cn(
-									"font-medium",
+									"shrink-0 truncate font-medium",
 									isOverdue && "text-red-700 dark:text-red-300",
 									isDueToday && "text-[#b45309] dark:text-amber-300",
 								)}
