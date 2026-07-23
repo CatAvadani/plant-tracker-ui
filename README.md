@@ -2,6 +2,8 @@
 
 Leaf Care UI is a polished Next.js frontend for managing a personal plant collection. It connects to a .NET Web API with JWT authentication for plant CRUD, image upload, care logs, profile updates, and AI plant analysis.
 
+The Android app is the primary maintained Leaf Care client. Privacy and account-deletion information must remain consistent across this web client, Android, the .NET API, Mastra, and Google Play.
+
 ## Features
 
 - Public landing page with clear registration and login paths
@@ -13,6 +15,7 @@ Leaf Care UI is a polished Next.js frontend for managing a personal plant collec
 - Plant image upload and card image display
 - Settings page for editing display name while keeping email read-only
 - Dark mode-ready styling with Tailwind `dark:` classes
+- Legacy privacy and deletion routes that redirect to the canonical Leaf Care webpages
 
 ## Tech Stack
 
@@ -70,9 +73,24 @@ Authenticated API calls send this header internally:
 
 Profile updates use `PATCH /api/users/me` with `displayName`; email is read-only in the UI.
 
+The production backend also exposes password recovery and `DELETE /api/users/me` for password-confirmed permanent account deletion. The current web settings screen links users to the canonical external deletion instructions rather than implementing the Android confirmation flow.
+
 Watering a plant is implemented as `PUT /api/plants/{id}` with `lastWatered` updated to today.
 
 Image upload uses `POST /api/plants/image` with multipart form data and expects `{ "imageUrl": "..." }`. The backend needs Cloudinary credentials configured with `Cloudinary:CloudName`, `Cloudinary:ApiKey`, and `Cloudinary:ApiSecret` or matching `CLOUDINARY_*` environment variables.
+
+## Privacy and Account Deletion
+
+The canonical production pages are:
+
+```text
+https://catalinaavadani.com/leafcare/privacy/
+https://catalinaavadani.com/leafcare/delete-account/
+```
+
+The local `/privacy` and `/delete-account` routes redirect to those pages. Update the Android policy, canonical website pages, Play Console Data Safety declarations, and redirect targets together whenever Leaf Care's providers or data practices change.
+
+`LEAF_CARE_SERVICE_KEY`, OpenAI credentials, Cloudinary credentials, database credentials, and Azure Communication Services credentials belong only on server services. They must never be added to `NEXT_PUBLIC_*` variables or browser code.
 
 ## Project Structure
 
